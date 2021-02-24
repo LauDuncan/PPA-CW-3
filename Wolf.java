@@ -61,12 +61,12 @@ public class Wolf extends Animal
      * @param field The field currently occupied.
      * @param newwolves A list to return newly born wolves.
      */
-    public void act(List<Animal> newwolves)
+    public void act(List<Animal> newWolves)
     {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newwolves);            
+            giveBirth(newWolves);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 

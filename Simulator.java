@@ -72,7 +72,6 @@ public class Simulator
         view.setColor(Lion.class, Color.YELLOW);
         // Setup a valid starting point.
         reset();
-        runLongSimulation();
     }
     
     /**
