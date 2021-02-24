@@ -14,11 +14,11 @@ public class Lion extends Animal
     // Characteristics shared by all lions (class variables).
     
     // The age at which a lion can start to breed.
-    private static final int BREEDING_AGE = 4;
+    private static final int BREEDING_AGE = 5;
     // The age to which a lion can live.
-    private static final int MAX_AGE = 14;
+    private static final int MAX_AGE = 20;
     // The likelihood of a lion breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single lamb. In effect, this is the
@@ -158,7 +158,7 @@ public class Lion extends Animal
     private int breed()
     {
         int births = 0;
-        if(canBreed() && canMeet() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(rand.nextDouble() <= BREEDING_PROBABILITY && canBreed() && canMeet()) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;
