@@ -31,7 +31,12 @@ public abstract class Animal
         isMale = rd.nextBoolean();
     }
     
-    //can meet same species.
+    /**
+     * Check the adjacent cells of the current animal and the animal will be able to meet and breed
+     * if the current animal's neighbor is of the same species and opposite gender.
+     * 
+     * @return true if the animal can meet and breed.
+     */
     public boolean canMeet()
     {
         List<Location> neighbours = field.adjacentLocations(this.getLocation());
@@ -47,12 +52,17 @@ public abstract class Animal
         return false;
     }
     
+    public void sleep()
+    {
+        
+    }
+    
     /**
      * Make this animal act - that is: make it do
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    abstract public void act(List<Animal> newAnimals);
+    abstract public void act(List<Animal> newAnimals, boolean isDay);
 
     /**
      * Check whether the animal is alive or not.
@@ -86,7 +96,10 @@ public abstract class Animal
         return location;
     }
     
-    //get the value isMale
+    /**
+     * Return the boolean value of whether the animal is a male.
+     * @return true if the animal is a male.
+     */
     protected boolean isMale()
     {
         return this.isMale;

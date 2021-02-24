@@ -50,20 +50,25 @@ public class Cow extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newCows A list to return newly born cows.
      */
-    public void act(List<Animal> newCows)
+    public void act(List<Animal> newCows, boolean isDay)
     {
-        incrementAge();
-        if(isAlive()) {
-            giveBirth(newCows);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null) {
-                setLocation(newLocation);
+        if(isDay){
+            incrementAge();
+            if(isAlive()) {
+                giveBirth(newCows);            
+                // Try to move into a free location.
+                Location newLocation = getField().freeAdjacentLocation(getLocation());
+                if(newLocation != null) {
+                    setLocation(newLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        }
+        else{
+            // Animal sleeps
         }
     }
 

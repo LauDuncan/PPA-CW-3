@@ -22,9 +22,9 @@ public class Lamb extends Animal
     private static final int MAX_LITTER_SIZE = 1;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
-    
+
     // The lamb's age.
     private int age;
 
@@ -44,26 +44,31 @@ public class Lamb extends Animal
             age = rand.nextInt(MAX_AGE);
         }
     }
-    
+
     /**
      * This is what the lamb does most of the time - it runs 
      * around. Sometimes it will breed or die of old age.
      * @param newLambs A list to return newly born lambs.
      */
-    public void act(List<Animal> newLambs)
+    public void act(List<Animal> newLambs, boolean isDay)
     {
-        incrementAge();
-        if(isAlive()) {
-            giveBirth(newLambs);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null) {
-                setLocation(newLocation);
+        if(isDay){
+            incrementAge();
+            if(isAlive()) {
+                giveBirth(newLambs);            
+                // Try to move into a free location.
+                Location newLocation = getField().freeAdjacentLocation(getLocation());
+                if(newLocation != null) {
+                    setLocation(newLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        }
+        else{
+            // Animal sleeps
         }
     }
 
@@ -78,7 +83,7 @@ public class Lamb extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Check whether or not this lamb is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -97,7 +102,7 @@ public class Lamb extends Animal
             newLambs.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.
