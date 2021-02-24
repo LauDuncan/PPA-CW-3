@@ -14,9 +14,9 @@ public class Wolf extends Animal
     // Characteristics shared by all wolves (class variables).
     
     // The age at which a wolf can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 3;
     // The age to which a wolf can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 17;
     // The likelihood of a wolf breeding.
     private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
@@ -158,7 +158,7 @@ public class Wolf extends Animal
     private int breed()
     {
         int births = 0;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(canBreed() && canMeet() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;

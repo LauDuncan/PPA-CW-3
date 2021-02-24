@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random; 
 
 /**
  * A class representing shared characteristics of animals.
@@ -9,7 +10,7 @@ import java.util.List;
 public abstract class Animal
 {
     // Whether the animal is alive or not.
-    private boolean alive;
+    private boolean alive, isMale;
     // The animal's field.
     private Field field;
     // The animal's position in the field.
@@ -26,8 +27,25 @@ public abstract class Animal
         alive = true;
         this.field = field;
         setLocation(location);
+        Random rd = new Random();
+        isMale = rd.nextBoolean();
     }
     
+    //can meet same species.
+    public boolean canMeet()
+    {
+        List<Location> neighbours = field.adjacentLocations(this.getLocation());
+        for(Location neighbour : neighbours){ //load each neighbour's location
+            if(neighbour != null){ //check the grid exist or not
+                Object object = field.getObjectAt(neighbour);
+                if(object != null && object.getClass().equals(this.getClass()) && ((Animal)object).isMale() != this.isMale()){
+                    return true;
+                }
+            }
+            
+        }
+        return false;
+    }
     /**
      * Make this animal act - that is: make it do
      * whatever it wants/needs to do.
@@ -65,6 +83,12 @@ public abstract class Animal
     protected Location getLocation()
     {
         return location;
+    }
+    
+    //get the value isMale
+    protected boolean isMale()
+    {
+        return this.isMale;
     }
     
     /**
