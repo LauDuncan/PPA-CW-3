@@ -46,6 +46,7 @@ public abstract class Animal
         }
         return false;
     }
+    
     /**
      * Make this animal act - that is: make it do
      * whatever it wants/needs to do.

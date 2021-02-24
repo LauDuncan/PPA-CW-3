@@ -19,7 +19,7 @@ public class Cow extends Animal
     // The likelihood of a cow breeding.
     private static final double BREEDING_PROBABILITY = 0.12;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 1;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -106,7 +106,7 @@ public class Cow extends Animal
     private int breed()
     {
         int births = 0;
-        if(canBreed() && canMeet() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(rand.nextDouble() <= BREEDING_PROBABILITY && canBreed() && canMeet()) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;

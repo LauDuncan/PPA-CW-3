@@ -16,14 +16,14 @@ public class Wolf extends Animal
     // The age at which a wolf can start to breed.
     private static final int BREEDING_AGE = 3;
     // The age to which a wolf can live.
-    private static final int MAX_AGE = 17;
+    private static final int MAX_AGE = 15;
     // The likelihood of a wolf breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single cow. In effect, this is the
     // number of steps a wolf can go before it has to eat again.
-    private static final int LAMB_FOOD_VALUE = 9;
+    private static final int COW_FOOD_VALUE = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -46,11 +46,11 @@ public class Wolf extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(LAMB_FOOD_VALUE);
+            foodLevel = rand.nextInt(COW_FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = LAMB_FOOD_VALUE;
+            foodLevel = COW_FOOD_VALUE;
         }
     }
     
@@ -59,7 +59,7 @@ public class Wolf extends Animal
      * cows. In the process, it might breed, die of hunger,
      * or die of old age.
      * @param field The field currently occupied.
-     * @param newwolves A list to return newly born wolves.
+     * @param newWolves A list to return newly born wolves.
      */
     public void act(List<Animal> newWolves)
     {
@@ -123,7 +123,7 @@ public class Wolf extends Animal
                 Cow cow = (Cow) animal;
                 if(cow.isAlive()) { 
                     cow.setDead();
-                    foodLevel = LAMB_FOOD_VALUE;
+                    foodLevel = COW_FOOD_VALUE;
                     return where;
                 }
             }
@@ -134,9 +134,9 @@ public class Wolf extends Animal
     /**
      * Check whether or not this wolf is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newwolves A list to return newly born wolves.
+     * @param newWolves A list to return newly born wolves.
      */
-    private void giveBirth(List<Animal> newwolves)
+    private void giveBirth(List<Animal> newWolves)
     {
         // New wolves are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -146,7 +146,7 @@ public class Wolf extends Animal
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Wolf young = new Wolf(false, field, loc);
-            newwolves.add(young);
+            newWolves.add(young);
         }
     }
         
@@ -158,7 +158,7 @@ public class Wolf extends Animal
     private int breed()
     {
         int births = 0;
-        if(canBreed() && canMeet() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(rand.nextDouble() <= BREEDING_PROBABILITY && canBreed() && canMeet()) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;

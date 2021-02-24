@@ -14,13 +14,13 @@ public class Tiger extends Animal
     // Characteristics shared by all tigers (class variables).
     
     // The age at which a tiger can start to breed.
-    private static final int BREEDING_AGE = 5;
+    private static final int BREEDING_AGE = 3;
     // The age to which a tiger can live.
     private static final int MAX_AGE = 15;
     // The likelihood of a tiger breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single lamb. In effect, this is the
     // number of steps a tiger can go before it has to eat again.
     private static final int LAMB_FOOD_VALUE = 9;
@@ -158,7 +158,7 @@ public class Tiger extends Animal
     private int breed()
     {
         int births = 0;
-        if(canBreed() && canMeet() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(rand.nextDouble() <= BREEDING_PROBABILITY && canBreed() && canMeet()) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;

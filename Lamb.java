@@ -13,13 +13,13 @@ public class Lamb extends Animal
     // Characteristics shared by all lambs (class variables).
 
     // The age at which a lamb can start to breed.
-    private static final int BREEDING_AGE = 1;
+    private static final int BREEDING_AGE = 3;
     // The age to which a lamb can live.
-    private static final int MAX_AGE = 12;
+    private static final int MAX_AGE = 10;
     // The likelihood of a lamb breeding.
     private static final double BREEDING_PROBABILITY = 0.12;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 1;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -106,7 +106,7 @@ public class Lamb extends Animal
     private int breed()
     {
         int births = 0;
-        if(canBreed() && canMeet() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(rand.nextDouble() <= BREEDING_PROBABILITY && canBreed() && canMeet()) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;
