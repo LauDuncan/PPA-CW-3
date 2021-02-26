@@ -86,7 +86,8 @@ public class Wolf extends Animal
             }
         }
         else{
-            // Animal sleeps.
+            // Animal sleeps
+            incrementHunger();
         }
     }
 

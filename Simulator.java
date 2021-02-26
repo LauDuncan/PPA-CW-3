@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.awt.Color;
 
@@ -18,6 +19,8 @@ public class Simulator
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
+    
+    private static final double GRASS_CREATION_PROBABILITY = 0.5;
     // The probability that a lion will be created in any given grid position.
     private static final double LION_CREATION_PROBABILITY = 0.01;
     // The probability that a tiger will be created in any given grid position.
@@ -68,10 +71,11 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Cow.class, Color.RED);
+        view.setColor(Lion.class, Color.GREEN);
+        view.setColor(Cow.class, Color.LIGHT_GRAY);
         view.setColor(Tiger.class, Color.ORANGE);
-        view.setColor(Wolf.class, Color.BLACK);
-        view.setColor(Lamb.class, Color.GREEN);
+        view.setColor(Wolf.class, Color.DARK_GRAY);
+        view.setColor(Lamb.class, Color.CYAN);
         view.setColor(Lion.class, Color.YELLOW);
         // Setup a valid starting point.
         reset();
@@ -94,7 +98,7 @@ public class Simulator
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
             simulateOneStep();
-            // delay(60);   // uncomment this to run more slowly
+            delay(60);   // uncomment this to run more slowly
         }
     }
     
@@ -118,6 +122,12 @@ public class Simulator
             timeOutput = " Day";
         }
 
+        // Let all plants grow.
+        for(Plant plant : field.getPlants().values()){
+            plant.grow(isDay);
+        }
+        
+        
         // Provide space for newborn animals.
         List<Animal> newAnimals = new ArrayList<>();        
         // Let all animals act.
@@ -128,6 +138,7 @@ public class Simulator
                 it.remove();
             }
         }
+        
                
         // Add the newly born animals to the main lists.
         animals.addAll(newAnimals);
@@ -158,28 +169,27 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+                Grass grass = new Grass(location);
+                field.getPlants().put(location, grass);
+                
                 if(rand.nextDouble() <= LION_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Lion lion = new Lion(true, field, location);
                     animals.add(lion);
                 }
                 else if(rand.nextDouble() <= TIGER_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Tiger tiger = new Tiger(true, field, location);
                     animals.add(tiger);
                 }
                 else if(rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Wolf wolf = new Wolf(true, field, location);
                     animals.add(wolf);
                 }
                 else if(rand.nextDouble() <=  COW_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Cow cow = new Cow(true, field, location);
                     animals.add(cow);
                 }
                 else if(rand.nextDouble() <= LAMB_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Lamb lamb = new Lamb(true, field, location);
                     animals.add(lamb);
                 }

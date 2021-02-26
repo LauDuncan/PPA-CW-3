@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Plant
+comment0.text=\n\ Write\ a\ description\ of\ class\ Plants\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=location
+comment1.target=Plant(Location)
+comment1.text=\n\ Create\ a\ new\ plant\ at\ location\ in\ field.\n\ \n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
+comment2.params=isDay
+comment2.target=void\ grow(boolean)
+comment2.text=\n\ Make\ this\ plant\ grow\n\ @param\ isDay\ A\ boolean\ indicating\ whether\ it\ is\ daytime.\n
+comment3.params=
+comment3.target=Location\ getLocation()
+comment3.text=\n\ Return\ the\ plant's\ location.\n\ @return\ The\ plant's\ location.\n
+numComments=4

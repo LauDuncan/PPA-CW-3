@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Random;
+import java.util.Iterator;
 
 /**
  * A simple model of a cow.
@@ -20,6 +21,8 @@ public class Cow extends Animal
     private static final double BREEDING_PROBABILITY = 0.12;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 1;
+    // number of steps a cow can go before it has to eat again (5 days).
+    private static final int MAX_ACTIVITY_LEVEL = 10;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -27,6 +30,8 @@ public class Cow extends Animal
     
     // The cow's age.
     private int age;
+    // The cow's hunger.
+    private int foodLevel;
 
     /**
      * Create a new cow. A cow may be created with age
@@ -42,6 +47,11 @@ public class Cow extends Animal
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
+            foodLevel = rand.nextInt(MAX_ACTIVITY_LEVEL);
+        }
+        else {
+            age = 0;
+            foodLevel = MAX_ACTIVITY_LEVEL;
         }
     }
     
@@ -54,10 +64,16 @@ public class Cow extends Animal
     {
         if(isDay){
             incrementAge();
+            incrementHunger();
             if(isAlive()) {
                 giveBirth(newCows);            
-                // Try to move into a free location.
-                Location newLocation = getField().freeAdjacentLocation(getLocation());
+                // Move towards a source of food if found.
+                Location newLocation = findFood();
+                if(newLocation == null) { 
+                    // No food found - try to move to a free location.
+                    newLocation = getField().freeAdjacentLocation(getLocation());
+                }
+                // See if it was possible to move.
                 if(newLocation != null) {
                     setLocation(newLocation);
                 }
@@ -69,9 +85,21 @@ public class Cow extends Animal
         }
         else{
             // Animal sleeps
+            incrementHunger();
         }
     }
 
+    /**
+     * Make this lion more hungry. This could result in the lion's death.
+     */
+    private void incrementHunger()
+    {
+        foodLevel--;
+        if(foodLevel <= 0) {
+            setDead();
+        }
+    }
+    
     /**
      * Increase the age.
      * This could result in the cow's death.
@@ -84,6 +112,33 @@ public class Cow extends Animal
         }
     }
     
+    /**
+     * Look for grass cells adjacent to the current location.
+     * Only one grass cell is eaten.
+     * @return Where food was found, or null if it wasn't.
+     */
+    private Location findFood()
+    {
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Plant plant = field.getPlants().get(where);
+            if(plant instanceof Grass) {
+                Grass grass = (Grass) plant;
+                if(grass.isEdible()) { 
+                    //System.out.println("Before:\n Growth: "+ grass.getGrowth() + "  Food Level:" + foodLevel);
+                    foodLevel += grass.consume();
+                    grass.reset();
+                    //System.out.println("After:\n Growth: "+ grass.getGrowth() + "   Cow Level:" + foodLevel);
+                    return where;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Check whether or not this cow is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -102,7 +157,7 @@ public class Cow extends Animal
             newCows.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.

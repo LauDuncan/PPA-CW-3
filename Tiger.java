@@ -85,7 +85,8 @@ public class Tiger extends Animal
             }
         }
         else{
-            // Animal sleeps.
+            // Animal sleeps
+            incrementHunger();
         }
     }
 

@@ -23,7 +23,7 @@ public class Lion extends Animal
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single lamb. In effect, this is the
     // number of steps a lion can go before it has to eat again.
-    private static final int LAMB_FOOD_VALUE = 9;
+    private static final int FOOD_VALUE = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -46,11 +46,11 @@ public class Lion extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(LAMB_FOOD_VALUE);
+            foodLevel = rand.nextInt(FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = LAMB_FOOD_VALUE;
+            foodLevel = FOOD_VALUE;
         }
     }
 
@@ -58,8 +58,9 @@ public class Lion extends Animal
      * This is what the lion does most of the time: it hunts for
      * lambs. In the process, it might breed, die of hunger,
      * or die of old age.
-     * @param field The field currently occupied.
+     * 
      * @param newLions A list to return newly born lions.
+     * @param isDay A boolean to indicate whether it is daytime
      */
     public void act(List<Animal> newLions, boolean isDay)
     {
@@ -85,7 +86,8 @@ public class Lion extends Animal
             }
         }
         else{
-            // Animal sleeps.
+            // Animal sleeps
+            incrementHunger();
         }
     }
 
@@ -128,7 +130,7 @@ public class Lion extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    foodLevel = LAMB_FOOD_VALUE;
+                    foodLevel += FOOD_VALUE;
                     return where;
                 }
             }
