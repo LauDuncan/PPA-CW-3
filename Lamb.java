@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -20,13 +21,17 @@ public class Lamb extends Animal
     private static final double BREEDING_PROBABILITY = 0.12;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 1;
+    // number of steps a lamb can go before it has to eat again (5 days).
+    private static final int MAX_ACTIVITY_LEVEL = 10;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
-    
+
     // The lamb's age.
     private int age;
+    // The lamb's hunger.
+    private int foodLevel;
 
     /**
      * Create a new lamb. A lamb may be created with age
@@ -42,6 +47,11 @@ public class Lamb extends Animal
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
+            foodLevel = rand.nextInt(MAX_ACTIVITY_LEVEL);
+        }
+        else {
+            age = 0;
+            foodLevel = MAX_ACTIVITY_LEVEL;
         }
     }
     
@@ -50,23 +60,46 @@ public class Lamb extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newLambs A list to return newly born lambs.
      */
-    public void act(List<Animal> newLambs)
+    public void act(List<Animal> newLambs, boolean isDay)
     {
-        incrementAge();
-        if(isAlive()) {
-            giveBirth(newLambs);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null) {
-                setLocation(newLocation);
+        if(isDay){
+            incrementAge();
+            incrementHunger();
+            if(isAlive()) {
+                giveBirth(newLambs);            
+                // Move towards a source of food if found.
+                Location newLocation = findFood();
+                if(newLocation == null) { 
+                    // No food found - try to move to a free location.
+                    newLocation = getField().freeAdjacentLocation(getLocation());
+                }
+                // See if it was possible to move.
+                if(newLocation != null) {
+                    setLocation(newLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        }
+        else{
+            // Animal sleeps
+            incrementHunger();
         }
     }
 
+    /**
+     * Make this lion more hungry. This could result in the lion's death.
+     */
+    private void incrementHunger()
+    {
+        foodLevel--;
+        if(foodLevel <= 0) {
+            setDead();
+        }
+    }
+    
     /**
      * Increase the age.
      * This could result in the lamb's death.
@@ -79,6 +112,33 @@ public class Lamb extends Animal
         }
     }
     
+    /**
+     * Look for grass cells adjacent to the current location.
+     * Only one grass cell is eaten.
+     * @return Where food was found, or null if it wasn't.
+     */
+    private Location findFood()
+    {
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Plant plant = field.getPlants().get(where);
+            if(plant instanceof Grass) {
+                Grass grass = (Grass) plant;
+                if(grass.isEdible()) { 
+                    //System.out.println("Before:\n Growth: "+ grass.getGrowth() + "  Food Level:" + foodLevel);
+                    foodLevel += grass.consume();
+                    grass.reset();
+                    //System.out.println("After:\n Growth: "+ grass.getGrowth() + "   Lamb Level:" + foodLevel);
+                    return where;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Check whether or not this lamb is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -97,7 +157,7 @@ public class Lamb extends Animal
             newLambs.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.

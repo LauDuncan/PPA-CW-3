@@ -1,12 +1,13 @@
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.awt.Color;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field
- * containing rabbits and foxes.
+ * containing lions, wolves, tigers, lambs, and cows.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
@@ -18,6 +19,8 @@ public class Simulator
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
+    
+    private static final double GRASS_CREATION_PROBABILITY = 0.5;
     // The probability that a lion will be created in any given grid position.
     private static final double LION_CREATION_PROBABILITY = 0.01;
     // The probability that a tiger will be created in any given grid position.
@@ -35,6 +38,9 @@ public class Simulator
     private Field field;
     // The current step of the simulation.
     private int step;
+    //The current time of the simulation.
+    private boolean isDay;
+    
     // A graphical view of the simulation.
     private SimulatorView view;
     
@@ -65,18 +71,18 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Cow.class, Color.RED);
+        view.setColor(Lion.class, Color.GREEN);
+        view.setColor(Cow.class, Color.LIGHT_GRAY);
         view.setColor(Tiger.class, Color.ORANGE);
-        view.setColor(Wolf.class, Color.BLACK);
-        view.setColor(Lamb.class, Color.GREEN);
+        view.setColor(Wolf.class, Color.DARK_GRAY);
+        view.setColor(Lamb.class, Color.CYAN);
         view.setColor(Lion.class, Color.YELLOW);
         // Setup a valid starting point.
         reset();
     }
     
     /**
-     * Run the simulation from its current state for a reasonably long period,
-     * (4000 steps).
+     * Run the simulation from its current state for a reasonably long period.
      */
     public void runLongSimulation()
     {
@@ -92,34 +98,52 @@ public class Simulator
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
             simulateOneStep();
-            // delay(60);   // uncomment this to run more slowly
+            delay(60);   // uncomment this to run more slowly
         }
     }
     
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each
-     * fox and rabbit.
+     * animal.
      */
     public void simulateOneStep()
     {
+        String timeOutput = "";
         step++;
+        
+        // Changing the time of day according to the number of steps
+        if(step % 2 == 0){
+            isDay = false;
+            timeOutput = " Night";
+        }
+        else{
+            isDay = true;
+            timeOutput = " Day";
+        }
 
+        // Let all plants grow.
+        for(Plant plant : field.getPlants().values()){
+            plant.grow(isDay);
+        }
+        
+        
         // Provide space for newborn animals.
         List<Animal> newAnimals = new ArrayList<>();        
-        // Let all rabbits act.
+        // Let all animals act.
         for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
             Animal animal = it.next();
-            animal.act(newAnimals);
+            animal.act(newAnimals, isDay);
             if(! animal.isAlive()) {
                 it.remove();
             }
         }
+        
                
-        // Add the newly born foxes and rabbits to the main lists.
+        // Add the newly born animals to the main lists.
         animals.addAll(newAnimals);
 
-        view.showStatus(step, field);
+        view.showStatus(step, timeOutput, field);
     }
         
     /**
@@ -127,12 +151,13 @@ public class Simulator
      */
     public void reset()
     {
-        step = 0;
+        step = 1;
+        isDay = true;
         animals.clear();
         populate();
         
         // Show the starting state in the view.
-        view.showStatus(step, field);
+        view.showStatus(step, " Day", field);
     }
     
     /**
@@ -144,28 +169,27 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+                Grass grass = new Grass(location);
+                field.getPlants().put(location, grass);
+                
                 if(rand.nextDouble() <= LION_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Lion lion = new Lion(true, field, location);
                     animals.add(lion);
                 }
                 else if(rand.nextDouble() <= TIGER_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Tiger tiger = new Tiger(true, field, location);
                     animals.add(tiger);
                 }
                 else if(rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Wolf wolf = new Wolf(true, field, location);
                     animals.add(wolf);
                 }
                 else if(rand.nextDouble() <=  COW_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Cow cow = new Cow(true, field, location);
                     animals.add(cow);
                 }
                 else if(rand.nextDouble() <= LAMB_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
                     Lamb lamb = new Lamb(true, field, location);
                     animals.add(lamb);
                 }

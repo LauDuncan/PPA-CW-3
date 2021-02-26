@@ -12,7 +12,7 @@ import java.util.Random;
 public class Wolf extends Animal
 {
     // Characteristics shared by all wolves (class variables).
-    
+
     // The age at which a wolf can start to breed.
     private static final int BREEDING_AGE = 3;
     // The age to which a wolf can live.
@@ -26,7 +26,7 @@ public class Wolf extends Animal
     private static final int COW_FOOD_VALUE = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
     // The wolf's age.
     private int age;
@@ -53,7 +53,7 @@ public class Wolf extends Animal
             foodLevel = COW_FOOD_VALUE;
         }
     }
-    
+
     /**
      * This is what the wolf does most of the time: it hunts for
      * cows. In the process, it might breed, die of hunger,
@@ -61,26 +61,33 @@ public class Wolf extends Animal
      * @param field The field currently occupied.
      * @param newWolves A list to return newly born wolves.
      */
-    public void act(List<Animal> newWolves)
+    public void act(List<Animal> newWolves, boolean isDay)
     {
-        incrementAge();
-        incrementHunger();
-        if(isAlive()) {
-            giveBirth(newWolves);            
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
-            if(newLocation == null) { 
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
+        //wolves hunt during the night.
+        if(isDay == false){
+            incrementAge();
+            incrementHunger();
+            if(isAlive()) {
+                giveBirth(newWolves);            
+                // Move towards a source of food if found.
+                Location newLocation = findFood();
+                if(newLocation == null) { 
+                    // No food found - try to move to a free location.
+                    newLocation = getField().freeAdjacentLocation(getLocation());
+                }
+                // See if it was possible to move.
+                if(newLocation != null) {
+                    setLocation(newLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
-            // See if it was possible to move.
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        }
+        else{
+            // Animal sleeps
+            incrementHunger();
         }
     }
 
@@ -94,7 +101,7 @@ public class Wolf extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Make this wolf more hungry. This could result in the wolf's death.
      */
@@ -105,7 +112,7 @@ public class Wolf extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Look for cows adjacent to the current location.
      * Only the first live cow is eaten.
@@ -130,7 +137,7 @@ public class Wolf extends Animal
         }
         return null;
     }
-    
+
     /**
      * Check whether or not this wolf is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -149,7 +156,7 @@ public class Wolf extends Animal
             newWolves.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.

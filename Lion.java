@@ -12,7 +12,7 @@ import java.util.Random;
 public class Lion extends Animal
 {
     // Characteristics shared by all lions (class variables).
-    
+
     // The age at which a lion can start to breed.
     private static final int BREEDING_AGE = 5;
     // The age to which a lion can live.
@@ -23,10 +23,10 @@ public class Lion extends Animal
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single lamb. In effect, this is the
     // number of steps a lion can go before it has to eat again.
-    private static final int LAMB_FOOD_VALUE = 9;
+    private static final int FOOD_VALUE = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
     // The lion's age.
     private int age;
@@ -46,41 +46,48 @@ public class Lion extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(LAMB_FOOD_VALUE);
+            foodLevel = rand.nextInt(FOOD_VALUE);
         }
         else {
             age = 0;
-            foodLevel = LAMB_FOOD_VALUE;
+            foodLevel = FOOD_VALUE;
         }
     }
-    
+
     /**
      * This is what the lion does most of the time: it hunts for
      * lambs. In the process, it might breed, die of hunger,
      * or die of old age.
-     * @param field The field currently occupied.
+     * 
      * @param newLions A list to return newly born lions.
+     * @param isDay A boolean to indicate whether it is daytime
      */
-    public void act(List<Animal> newLions)
+    public void act(List<Animal> newLions, boolean isDay)
     {
-        incrementAge();
-        incrementHunger();
-        if(isAlive()) {
-            giveBirth(newLions);            
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
-            if(newLocation == null) { 
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
+        if(isDay){
+            incrementAge();
+            incrementHunger();
+            if(isAlive()) {
+                giveBirth(newLions);            
+                // Move towards a source of food if found.
+                Location newLocation = findFood();
+                if(newLocation == null) { 
+                    // No food found - try to move to a free location.
+                    newLocation = getField().freeAdjacentLocation(getLocation());
+                }
+                // See if it was possible to move.
+                if(newLocation != null) {
+                    setLocation(newLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
-            // See if it was possible to move.
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        }
+        else{
+            // Animal sleeps
+            incrementHunger();
         }
     }
 
@@ -94,7 +101,7 @@ public class Lion extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Make this lion more hungry. This could result in the lion's death.
      */
@@ -105,7 +112,7 @@ public class Lion extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Look for lambs adjacent to the current location.
      * Only the first live lamb is eaten.
@@ -123,14 +130,14 @@ public class Lion extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    foodLevel = LAMB_FOOD_VALUE;
+                    foodLevel += FOOD_VALUE;
                     return where;
                 }
             }
         }
         return null;
     }
-    
+
     /**
      * Check whether or not this lion is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -149,7 +156,7 @@ public class Lion extends Animal
             newLions.add(young);
         }
     }
-        
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.

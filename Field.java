@@ -2,6 +2,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -20,6 +21,8 @@ public class Field
     private int depth, width;
     // Storage for the animals.
     private Object[][] field;
+    //storage for the plants.
+    private HashMap<Location, Plant> plants;
 
     /**
      * Represent a field of the given dimensions.
@@ -31,6 +34,7 @@ public class Field
         this.depth = depth;
         this.width = width;
         field = new Object[depth][width];
+        plants = new HashMap<>();
     }
     
     /**
@@ -184,6 +188,14 @@ public class Field
             Collections.shuffle(locations, rand);
         }
         return locations;
+    }
+    
+    /**
+     * Return the plants map
+     */
+    public HashMap<Location, Plant> getPlants()
+    {
+        return plants;
     }
 
     /**

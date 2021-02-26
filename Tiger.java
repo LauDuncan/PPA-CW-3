@@ -61,26 +61,32 @@ public class Tiger extends Animal
      * @param field The field currently occupied.
      * @param newTigers A list to return newly born tigers.
      */
-    public void act(List<Animal> newTigers)
+    public void act(List<Animal> newTigers, boolean isDay)
     {
-        incrementAge();
-        incrementHunger();
-        if(isAlive()) {
-            giveBirth(newTigers);            
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
-            if(newLocation == null) { 
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
+        if(isDay){
+            incrementAge();
+            incrementHunger();
+            if(isAlive()) {
+                giveBirth(newTigers);            
+                // Move towards a source of food if found.
+                Location newLocation = findFood();
+                if(newLocation == null) { 
+                    // No food found - try to move to a free location.
+                    newLocation = getField().freeAdjacentLocation(getLocation());
+                }
+                // See if it was possible to move.
+                if(newLocation != null) {
+                    setLocation(newLocation);
+                }
+                else {
+                    // Overcrowding.
+                    setDead();
+                }
             }
-            // See if it was possible to move.
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        }
+        else{
+            // Animal sleeps
+            incrementHunger();
         }
     }
 
