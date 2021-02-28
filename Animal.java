@@ -47,7 +47,6 @@ public abstract class Animal
                     return true;
                 }
             }
-            
         }
         return false;
     }

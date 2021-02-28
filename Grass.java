@@ -18,19 +18,30 @@ public class Grass extends Plant
         Random rd = new Random();
         growth = rd.nextInt(5);
     }
-    
+
     public int getGrowth()
     {
         return growth;
     }
-    
+
     public void grow(boolean isDay)
     {
         if(isDay){
             growth += 1;
         }
     }
-    
+
+    public void grow(boolean isDay, Weather weather)
+    {
+        if(isDay && weather == null){
+            growth += 1; //normal growth of the plant under sunlight
+        }
+        
+        else if(weather != null){
+            growth += weather.getGrowthEffect();
+        }
+    }
+
     /**
      * Indicate that the plant just got eaten.
      * The growth of the plant has been resetted.
@@ -39,7 +50,7 @@ public class Grass extends Plant
     {
         growth = 0;
     }
-    
+
     /**
      * Check whether the plant is edible.
      * @return true if the plant is edible.
@@ -48,7 +59,7 @@ public class Grass extends Plant
     {
         return growth > 2;
     }
-    
+
     protected int consume()
     {
         if (growth > 3){

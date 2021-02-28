@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Weather
+comment0.text=\n\ Write\ a\ description\ of\ class\ Weather\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=Weather()
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Weather\n
+comment2.params=
+comment2.target=void\ initialize()
+comment2.text=\n\ \n
+comment3.params=
+comment3.target=java.util.ArrayList\ getWeatherList()
+comment4.params=
+comment4.target=Weather\ getRandomWeather()
+comment5.params=
+comment5.target=void\ resetTrigger()
+comment6.params=
+comment6.target=int\ getGrowthEffect()
+comment7.params=
+comment7.target=void\ getAnimalEffect()
+comment8.params=
+comment8.target=boolean\ getTrigger()
+numComments=9

@@ -129,7 +129,7 @@ public class Tiger extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    foodLevel = LAMB_FOOD_VALUE;
+                    foodLevel += LAMB_FOOD_VALUE;
                     return where;
                 }
             }

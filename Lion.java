@@ -137,7 +137,7 @@ public class Lion extends Animal
         }
         return null;
     }
-
+    
     /**
      * Check whether or not this lion is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -156,7 +156,7 @@ public class Lion extends Animal
             newLions.add(young);
         }
     }
-
+    
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -170,7 +170,7 @@ public class Lion extends Animal
         }
         return births;
     }
-
+    
     /**
      * A lion can breed if it has reached the breeding age.
      */
