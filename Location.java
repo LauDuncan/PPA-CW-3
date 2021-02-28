@@ -9,6 +9,7 @@ public class Location
     // Row and column positions.
     private int row;
     private int col;
+    private int height;
     
       
     /**
@@ -16,10 +17,11 @@ public class Location
      * @param row The row.
      * @param col The column.
      */
-    public Location(int row, int col)
+    public Location(int row, int col, int height)
     {
         this.row = row;
         this.col = col;
+        this.height = height;
     }
     
     /**
@@ -29,7 +31,7 @@ public class Location
     {
         if(obj instanceof Location) {
             Location other = (Location) obj;
-            return row == other.getRow() && col == other.getCol();
+            return row == other.getRow() && col == other.getCol() && height == other.getHeight();
         }
         else {
             return false;
@@ -42,7 +44,7 @@ public class Location
      */
     public String toString()
     {
-        return row + "," + col;
+        return row + "," + col + "," + height;
     }
     
     /**
@@ -53,7 +55,7 @@ public class Location
      */
     public int hashCode()
     {
-        return (row << 16) + col;
+        return (row << 16) + col + height;
     }
     
     /**
@@ -70,5 +72,10 @@ public class Location
     public int getCol()
     {
         return col;
+    }
+    
+    public int getHeight()
+    {
+        return height;
     }
 }

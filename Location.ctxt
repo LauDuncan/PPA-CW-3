@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Location
 comment0.text=\n\ Represent\ a\ location\ in\ a\ rectangular\ grid.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 2016.02.29\n
-comment1.params=row\ col
-comment1.target=Location(int,\ int)
+comment1.params=row\ col\ height
+comment1.target=Location(int,\ int,\ int)
 comment1.text=\n\ Represent\ a\ row\ and\ column.\n\ @param\ row\ The\ row.\n\ @param\ col\ The\ column.\n
 comment2.params=obj
 comment2.target=boolean\ equals(java.lang.Object)
@@ -19,4 +19,6 @@ comment5.text=\n\ @return\ The\ row.\n
 comment6.params=
 comment6.target=int\ getCol()
 comment6.text=\n\ @return\ The\ column.\n
-numComments=7
+comment7.params=
+comment7.target=int\ getHeight()
+numComments=8

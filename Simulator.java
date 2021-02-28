@@ -17,8 +17,10 @@ public class Simulator
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
-    // The default depth of the grid.
-    private static final int DEFAULT_DEPTH = 80;
+    // The default length of the grid.
+    private static final int DEFAULT_LENGTH = 80;
+    // The default height of the grid
+    private static final int DEFAULT_HEIGHT = 2;
 
     private static final double GRASS_CREATION_PROBABILITY = 0.5;
     // The probability that a lion will be created in any given grid position.
@@ -56,34 +58,36 @@ public class Simulator
      */
     public Simulator()
     {
-        this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+        this(DEFAULT_LENGTH, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     /**
      * Create a simulation field with the given size.
-     * @param depth Depth of the field. Must be greater than zero.
+     * @param length Length of the field. Must be greater than zero.
      * @param width Width of the field. Must be greater than zero.
      */
-    public Simulator(int depth, int width)
+    public Simulator(int length, int width, int height)
     {
-        if(width <= 0 || depth <= 0) {
+        if(width <= 0 || length <= 0) {
             System.out.println("The dimensions must be greater than zero.");
             System.out.println("Using default values.");
-            depth = DEFAULT_DEPTH;
+            length = DEFAULT_LENGTH;
             width = DEFAULT_WIDTH;
+            height = DEFAULT_HEIGHT;
         }
 
         animals = new ArrayList<>();
-        weatherList = new ArrayList<>();
-        weather = new Weather();
-        field = new Field(depth, width);
+        // weatherList = new ArrayList<>();
+        // weather = new Weather();
+        field = new Field(length, width, height);
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
+        view = new SimulatorView(length, width);
+        view.setColor(Plant.class, Color.GREEN);
         view.setColor(Lion.class, Color.YELLOW);
         view.setColor(Tiger.class, Color.ORANGE);
         view.setColor(Wolf.class, Color.DARK_GRAY);
-        view.setColor(Lamb.class, Color.GREEN);
+        view.setColor(Lamb.class, Color.PINK);
         view.setColor(Cow.class, Color.LIGHT_GRAY);
         // Setup a valid starting point.
         reset();
@@ -139,7 +143,7 @@ public class Simulator
         // }
 
         for(Plant plant : field.getPlants().values()){
-            plant.grow(isDay, currentWeather);
+            plant.grow(isDay);
         }
 
 
@@ -167,7 +171,7 @@ public class Simulator
     {
         step = 1;
         isDay = true;
-        weather.initialize();
+        //weather.initialize();
         animals.clear();
         populate();
 
@@ -182,43 +186,42 @@ public class Simulator
     {
         Random rand = Randomizer.getRandom();
         field.clear();
-        for(int row = 0; row < field.getDepth(); row++) {
+        for(int row = 0; row < field.getLength(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                Location location = new Location(row, col);
-                Grass grass = new Grass(location);
-                field.getPlants().put(location, grass);
-
-                if(rand.nextDouble() <= LION_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY){
+                    System.out.println("grass created");
+                    Location location = new Location(row, col, 0);
+                    Grass grass = new Grass(location);
+                    field.getPlants().put(location, grass);
+                }
+                else if(rand.nextDouble() <= LION_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col, 1);
                     Lion lion = new Lion(true, field, location);
                     animals.add(lion);
                 }
                 else if(rand.nextDouble() <= TIGER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col, 1);
                     Tiger tiger = new Tiger(true, field, location);
                     animals.add(tiger);
                 }
                 else if(rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col, 1);
                     Wolf wolf = new Wolf(true, field, location);
                     animals.add(wolf);
                 }
                 else if(rand.nextDouble() <=  COW_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col, 1);
                     Cow cow = new Cow(true, field, location);
                     animals.add(cow);
                 }
                 else if(rand.nextDouble() <= LAMB_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col, 1);
                     Lamb lamb = new Lamb(true, field, location);
                     animals.add(lamb);
                 }
                 // else leave the location empty.
             }
         }
-    }
-    
-    private void initializeWeather()
-    {
-        Rain rain = new Rain();
-        Snow snow = new Snow();
-        weatherList.add(rain);
-        weatherList.add(snow);
     }
 
     /**

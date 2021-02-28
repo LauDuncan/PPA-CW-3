@@ -18,9 +18,9 @@ public class Field
     private static final Random rand = Randomizer.getRandom();
     
     // The depth and width of the field.
-    private int depth, width;
+    private int length, width, height;
     // Storage for the animals.
-    private Object[][] field;
+    private Object[][][] field;
     //storage for the plants.
     private HashMap<Location, Plant> plants;
 
@@ -29,11 +29,12 @@ public class Field
      * @param depth The depth of the field.
      * @param width The width of the field.
      */
-    public Field(int depth, int width)
+    public Field(int length, int width, int height)
     {
-        this.depth = depth;
+        this.length = length;
         this.width = width;
-        field = new Object[depth][width];
+        this.height = height;
+        field = new Object[length][width][height];
         plants = new HashMap<>();
     }
     
@@ -42,9 +43,11 @@ public class Field
      */
     public void clear()
     {
-        for(int row = 0; row < depth; row++) {
+        for(int row = 0; row < length; row++) {
             for(int col = 0; col < width; col++) {
-                field[row][col] = null;
+                for(int h = 0; h < height; h++){
+                    field[row][col][h] = null;
+                }
             }
         }
     }
@@ -68,7 +71,7 @@ public class Field
      */
     public void place(Object animal, int row, int col)
     {
-        place(animal, new Location(row, col));
+        place(animal, new Location(row, col, 1));
     }
     
     /**
@@ -80,7 +83,7 @@ public class Field
      */
     public void place(Object animal, Location location)
     {
-        field[location.getRow()][location.getCol()] = animal;
+        field[location.getRow()][location.getCol()][location.getHeight()] = animal;
     }
     
     /**
@@ -90,7 +93,7 @@ public class Field
      */
     public Object getObjectAt(Location location)
     {
-        return getObjectAt(location.getRow(), location.getCol());
+        return getObjectAt(location.getRow(), location.getCol(), location.getHeight());
     }
     
     /**
@@ -99,9 +102,9 @@ public class Field
      * @param col The desired column.
      * @return The animal at the given location, or null if there is none.
      */
-    public Object getObjectAt(int row, int col)
+    public Object getObjectAt(int row, int col, int height)
     {
-        return field[row][col];
+        return field[row][col][height];
     }
     
     /**
@@ -170,14 +173,15 @@ public class Field
         if(location != null) {
             int row = location.getRow();
             int col = location.getCol();
+            int height = location.getHeight();
             for(int roffset = -1; roffset <= 1; roffset++) {
                 int nextRow = row + roffset;
-                if(nextRow >= 0 && nextRow < depth) {
+                if(nextRow >= 0 && nextRow < length) {
                     for(int coffset = -1; coffset <= 1; coffset++) {
                         int nextCol = col + coffset;
                         // Exclude invalid locations and the original location.
                         if(nextCol >= 0 && nextCol < width && (roffset != 0 || coffset != 0)) {
-                            locations.add(new Location(nextRow, nextCol));
+                            locations.add(new Location(nextRow, nextCol, height));
                         }
                     }
                 }
@@ -202,9 +206,9 @@ public class Field
      * Return the depth of the field.
      * @return The depth of the field.
      */
-    public int getDepth()
+    public int getLength()
     {
-        return depth;
+        return length;
     }
     
     /**
@@ -214,5 +218,10 @@ public class Field
     public int getWidth()
     {
         return width;
+    }
+    
+    public int getHeight()
+    {
+        return height;
     }
 }

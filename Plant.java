@@ -26,7 +26,7 @@ public abstract class Plant
      * Make this plant grow
      * @param isDay A boolean indicating whether it is daytime.
      */
-    abstract public void grow(boolean isDay, Weather weather);
+    abstract public void grow(boolean isDay);
 
     /**
      * Return the plant's location.
