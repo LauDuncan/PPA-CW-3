@@ -7,31 +7,37 @@
  */
 public class Snow extends Weather
 {
-    // instance variables - replace the example below with your own
-    private int x;
+    // The effect that will have on the plant's growth rate.
+    private final int GROWTH_EFFECT = 0;
+    // Whether this weather will have an effect on the animal's movement.
+    private final boolean MOVEMENT_RESTRICTION = true;
+    // Whether this weather will have an effect on the animal's food finding.
+    private final boolean HUNT_RESTRICTION = false;
+    
 
     /**
-     * Constructor for objects of class Snow
+     * Constructor for objects of class Rain
      */
     public Snow()
     {
-        // initialise instance variables
-        x = 0;
+        //
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * 
      */
     public int getGrowthEffect()
     {
-        return 0;
+        return GROWTH_EFFECT;
     }
     
-    public void getAnimalEffect()
+    public boolean getMovementRestriction()
     {
-        
+        return MOVEMENT_RESTRICTION;
+    }
+    
+    public boolean getHuntRestriction()
+    {
+        return HUNT_RESTRICTION;   
     }
 }

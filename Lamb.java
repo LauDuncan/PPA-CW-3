@@ -60,32 +60,47 @@ public class Lamb extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newLambs A list to return newly born lambs.
      */
-    public void act(List<Animal> newLambs, boolean isDay)
+    public void act(List<Animal> newLambs, boolean isDay, Weather weather)
     {
         if(isDay){
             incrementAge();
             incrementHunger();
             if(isAlive()) {
                 giveBirth(newLambs);            
-                // Move towards a source of food if found.
-                Location newLocation = findFood();
-                if(newLocation == null) { 
-                    // No food found - try to move to a free location.
-                    newLocation = getField().freeAdjacentLocation(getLocation());
-                }
-                // See if it was possible to move.
-                if(newLocation != null) {
-                    setLocation(newLocation);
-                }
-                else {
-                    // Overcrowding.
-                    setDead();
-                }
+                routine(weather);
             }
         }
         else{
             // Animal sleeps
             incrementHunger();
+        }
+    }
+
+    private void routine(Weather weather)
+    {      
+        Location newLocation = null;
+        // Checks whether the weather has a effect on the animal's food gathering behaviour.
+        if(weather != null){
+            if(! weather.getHuntRestriction()){
+                newLocation = findFood();
+            }
+            else if(! weather.getMovementRestriction()){
+                newLocation = getLocation();
+            }
+        }
+        
+        if(newLocation == null) { 
+            // No food found - try to move to a free location.
+            newLocation = getField().freeAdjacentLocation(getLocation());
+        }
+
+        // See if it was possible to move.
+        if(newLocation != null) {
+            setLocation(newLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
         }
     }
 

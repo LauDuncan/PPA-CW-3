@@ -37,9 +37,8 @@ public class Simulator
 
     // List of animals in the field.
     private List<Animal> animals;
+    // List of weather possible of triggering
     private List<Weather> weatherList;
-    // The current weather in the field.
-    private Weather weather;
     // The current state of the field.
     private Field field;
 
@@ -75,7 +74,6 @@ public class Simulator
 
         animals = new ArrayList<>();
         weatherList = new ArrayList<>();
-        weather = new Weather();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
@@ -133,10 +131,10 @@ public class Simulator
 
         // Randomizes the probability of a weather event
         Weather currentWeather = null;
-        // weather.resetTrigger();
-        // if (weather.getTrigger()){
-            // currentWeather = weather.getRandomWeather();
-        // }
+        if (rand.nextDouble() <= WEATHER_TRIGGER_PROBABILITY){
+            currentWeather = weatherList.get(rand.nextInt(weatherList.size()));;
+            System.out.println(currentWeather.getClass());
+        }
 
         for(Plant plant : field.getPlants().values()){
             plant.grow(isDay, currentWeather);
@@ -144,11 +142,12 @@ public class Simulator
 
 
         // Provide space for newborn animals.
-        List<Animal> newAnimals = new ArrayList<>();        
+        List<Animal> newAnimals = new ArrayList<>();  
+        
         // Let all animals act.
         for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
             Animal animal = it.next();
-            animal.act(newAnimals, isDay);
+            animal.act(newAnimals, isDay, currentWeather);
             if(! animal.isAlive()) {
                 it.remove();
             }
@@ -167,7 +166,7 @@ public class Simulator
     {
         step = 1;
         isDay = true;
-        weather.initialize();
+        initializeWeather();
         animals.clear();
         populate();
 

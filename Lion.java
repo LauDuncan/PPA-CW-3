@@ -62,32 +62,47 @@ public class Lion extends Animal
      * @param newLions A list to return newly born lions.
      * @param isDay A boolean to indicate whether it is daytime
      */
-    public void act(List<Animal> newLions, boolean isDay)
+    public void act(List<Animal> newLions, boolean isDay, Weather weather)
     {
         if(isDay){
             incrementAge();
             incrementHunger();
             if(isAlive()) {
                 giveBirth(newLions);            
-                // Move towards a source of food if found.
-                Location newLocation = findFood();
-                if(newLocation == null) { 
-                    // No food found - try to move to a free location.
-                    newLocation = getField().freeAdjacentLocation(getLocation());
-                }
-                // See if it was possible to move.
-                if(newLocation != null) {
-                    setLocation(newLocation);
-                }
-                else {
-                    // Overcrowding.
-                    setDead();
-                }
+                routine(weather);
             }
         }
         else{
             // Animal sleeps
             incrementHunger();
+        }
+    }
+
+    private void routine(Weather weather)
+    {      
+        Location newLocation = null;
+        // Checks whether the weather has a effect on the animal's food gathering behaviour.
+        if(weather != null){
+            if(! weather.getHuntRestriction()){
+                newLocation = findFood();
+            }
+            else if(! weather.getMovementRestriction()){
+                newLocation = getLocation();
+            }
+        }
+        
+        if(newLocation == null) { 
+            // No food found - try to move to a free location.
+            newLocation = getField().freeAdjacentLocation(getLocation());
+        }
+
+        // See if it was possible to move.
+        if(newLocation != null) {
+            setLocation(newLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
         }
     }
 
@@ -137,7 +152,7 @@ public class Lion extends Animal
         }
         return null;
     }
-    
+
     /**
      * Check whether or not this lion is to give birth at this step.
      * New births will be made into free adjacent locations.
@@ -156,7 +171,7 @@ public class Lion extends Animal
             newLions.add(young);
         }
     }
-    
+
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -170,7 +185,7 @@ public class Lion extends Animal
         }
         return births;
     }
-    
+
     /**
      * A lion can breed if it has reached the breeding age.
      */

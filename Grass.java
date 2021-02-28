@@ -24,13 +24,6 @@ public class Grass extends Plant
         return growth;
     }
 
-    public void grow(boolean isDay)
-    {
-        if(isDay){
-            growth += 1;
-        }
-    }
-
     public void grow(boolean isDay, Weather weather)
     {
         if(isDay && weather == null){

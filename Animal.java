@@ -57,7 +57,7 @@ public abstract class Animal
      * @param newAnimals A list to receive newly born animals.
      * @param isDay A boolean to indicate whether it is daytime
      */
-    abstract public void act(List<Animal> newAnimals, boolean isDay);
+    abstract public void act(List<Animal> newAnimals, boolean isDay, Weather weather);
 
     /**
      * Check whether the animal is alive or not.
