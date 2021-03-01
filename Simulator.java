@@ -217,8 +217,10 @@ public class Simulator
     {
         Rain rain = new Rain();
         Snow snow = new Snow();
+        Fog fog = new Fog();
         weatherList.add(rain);
         weatherList.add(snow);
+        weatherList.add(fog);
     }
 
     /**

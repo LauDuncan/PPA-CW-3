@@ -64,10 +64,11 @@ public class Cow extends Animal
     public void act(List<Animal> newCows, boolean isDay, Weather weather)
     {
         if(isDay){
-            simulateDisease();
+            //simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()){
+                simulateDisease();
                 giveBirth(newCows);
                 routine(weather);
             }

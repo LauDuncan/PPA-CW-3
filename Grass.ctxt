@@ -1,19 +1,19 @@
 #BlueJ class context
 comment0.target=Grass
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Grass\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\n\ Write\ a\ description\ of\ class\ Grass\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
 comment1.params=location
 comment1.target=Grass(Location)
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Grass\r\n
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Grass\n
 comment2.params=
 comment2.target=int\ getGrowth()
-comment3.params=isDay
-comment3.target=void\ grow(boolean)
+comment3.params=isDay\ weather
+comment3.target=void\ grow(boolean,\ Weather)
 comment4.params=
 comment4.target=void\ reset()
-comment4.text=\r\n\ Indicate\ that\ the\ plant\ just\ got\ eaten.\r\n\ The\ growth\ of\ the\ plant\ has\ been\ resetted.\r\n
+comment4.text=\n\ Indicate\ that\ the\ plant\ just\ got\ eaten.\n\ The\ growth\ of\ the\ plant\ has\ been\ resetted.\n
 comment5.params=
 comment5.target=boolean\ isEdible()
-comment5.text=\r\n\ Check\ whether\ the\ plant\ is\ edible.\r\n\ @return\ true\ if\ the\ plant\ is\ edible.\r\n
+comment5.text=\n\ Check\ whether\ the\ plant\ is\ edible.\n\ @return\ true\ if\ the\ plant\ is\ edible.\n
 comment6.params=
 comment6.target=int\ consume()
 numComments=7

@@ -15,9 +15,11 @@ public abstract class Animal
     private Field field;
     // The animal's position in the field.
     private Location location;
+    
     //indicate the animal has disease
     private Boolean hasDisease = null;
     private double diseaseProbability;
+    
     // The animal's food level, which is increased by eating another animal.
     private int foodLevel;
     /**
@@ -133,6 +135,7 @@ public abstract class Animal
     {
         this.hasDisease = hasDisease;
     }
+    
     /**
      * Simulate disease for any animal
      */
@@ -142,7 +145,8 @@ public abstract class Animal
             Random rd = new Random();
             this.hasDisease = rd.nextDouble() < getDiseaseProbability();
         }
-        if(this.hasDisease  ){
+        
+        if(this.hasDisease){
             List<Location> neighbours = field.adjacentLocations(this.getLocation());        
             for(Location neighbour : neighbours){ //load each neighbour's location
                 if(neighbour != null){ //check the grid exist or not
@@ -154,6 +158,7 @@ public abstract class Animal
             }
         }
     }
+    
     /**
      * Place the animal at the new location in the given field.
      * @param newLocation The animal's new location.
@@ -185,20 +190,27 @@ public abstract class Animal
     }
     
     /**
-     * Return the disease probability
+     * Sets the probability of the animal catching the disease
      */
     protected void setDiseaseProbability(double diseaseProbability)
     {
         this.diseaseProbability = diseaseProbability;
     }
     
+    /**
+     * Returns the current food level of the animal
+     * 
+     * @return The food level of the animal
+     */
     protected int getFoodLevel()
     {
         return foodLevel;
     }
     
     /**
-     * Return the disease probability
+     * Sets the food level of the animal
+     * 
+     * @param foodLevel the food level to be set
      */
     protected void setFoodLevel(int foodLevel)
     {

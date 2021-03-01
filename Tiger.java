@@ -66,10 +66,11 @@ public class Tiger extends Animal
     public void act(List<Animal> newTigers, boolean isDay, Weather weather)
     {
         if(isDay){
-            simulateDisease();
+            //simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {
+                simulateDisease();
                 giveBirth(newTigers);            
                 routine(weather);
             }
