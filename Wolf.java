@@ -61,33 +61,47 @@ public class Wolf extends Animal
      * @param field The field currently occupied.
      * @param newWolves A list to return newly born wolves.
      */
-    public void act(List<Animal> newWolves, boolean isDay)
+    public void act(List<Animal> newWolves, boolean isDay, Weather weather)
     {
-        //wolves hunt during the night.
-        if(isDay == false){
+        if(isDay){
             incrementAge();
             incrementHunger();
             if(isAlive()) {
                 giveBirth(newWolves);            
-                // Move towards a source of food if found.
-                Location newLocation = findFood();
-                if(newLocation == null) { 
-                    // No food found - try to move to a free location.
-                    newLocation = getField().freeAdjacentLocation(getLocation());
-                }
-                // See if it was possible to move.
-                if(newLocation != null) {
-                    setLocation(newLocation);
-                }
-                else {
-                    // Overcrowding.
-                    setDead();
-                }
+                routine(weather);
             }
         }
         else{
             // Animal sleeps
             incrementHunger();
+        }
+    }
+
+    private void routine(Weather weather)
+    {      
+        Location newLocation = null;
+        // Checks whether the weather has a effect on the animal's food gathering behaviour.
+        if(weather != null){
+            if(! weather.getHuntRestriction()){
+                newLocation = findFood();
+            }
+            else if(! weather.getMovementRestriction()){
+                newLocation = getLocation();
+            }
+        }
+        
+        if(newLocation == null) { 
+            // No food found - try to move to a free location.
+            newLocation = getField().freeAdjacentLocation(getLocation());
+        }
+
+        // See if it was possible to move.
+        if(newLocation != null) {
+            setLocation(newLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
         }
     }
 

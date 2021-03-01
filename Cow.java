@@ -25,9 +25,9 @@ public class Cow extends Animal
     private static final int MAX_ACTIVITY_LEVEL = 10;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
-    
+
     // Individual characteristics (instance fields).
-    
+
     // The cow's age.
     private int age;
     // The cow's hunger.
@@ -54,38 +54,53 @@ public class Cow extends Animal
             foodLevel = MAX_ACTIVITY_LEVEL;
         }
     }
-    
+
     /**
      * This is what the cow does most of the time - it runs 
      * around. Sometimes it will breed or die of old age.
      * @param newCows A list to return newly born cows.
      */
-    public void act(List<Animal> newCows, boolean isDay)
+    public void act(List<Animal> newCows, boolean isDay, Weather weather)
     {
         if(isDay){
             incrementAge();
             incrementHunger();
-            if(isAlive()) {
-                giveBirth(newCows);            
-                // Move towards a source of food if found.
-                Location newLocation = findFood();
-                if(newLocation == null) { 
-                    // No food found - try to move to a free location.
-                    newLocation = getField().freeAdjacentLocation(getLocation());
-                }
-                // See if it was possible to move.
-                if(newLocation != null) {
-                    setLocation(newLocation);
-                }
-                else {
-                    // Overcrowding.
-                    setDead();
-                }
+            if(isAlive()){
+                giveBirth(newCows);
+                routine(weather);
             }
         }
         else{
             // Animal sleeps
             incrementHunger();
+        }
+    }
+
+    private void routine(Weather weather)
+    {      
+        Location newLocation = null;
+        // Checks whether the weather has a effect on the animal's food gathering behaviour.
+        if(weather != null){
+            if(! weather.getHuntRestriction()){
+                newLocation = findFood();
+            }
+            else if(! weather.getMovementRestriction()){
+                newLocation = getLocation();
+            }
+        }
+        
+        if(newLocation == null) { 
+            // No food found - try to move to a free location.
+            newLocation = getField().freeAdjacentLocation(getLocation());
+        }
+
+        // See if it was possible to move.
+        if(newLocation != null) {
+            setLocation(newLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
         }
     }
 
@@ -99,7 +114,7 @@ public class Cow extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Increase the age.
      * This could result in the cow's death.
@@ -111,7 +126,7 @@ public class Cow extends Animal
             setDead();
         }
     }
-    
+
     /**
      * Look for grass cells adjacent to the current location.
      * Only one grass cell is eaten.
