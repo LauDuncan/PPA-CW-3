@@ -1,13 +1,13 @@
 #BlueJ class context
 comment0.target=Plant
-comment0.text=\n\ Write\ a\ description\ of\ class\ Plants\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Plants\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=location
 comment1.target=Plant(Location)
-comment1.text=\n\ Create\ a\ new\ plant\ at\ location\ in\ field.\n\ \n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
-comment2.params=isDay\ weather
-comment2.target=void\ grow(boolean,\ Weather)
-comment2.text=\n\ Make\ this\ plant\ grow\n\ @param\ isDay\ A\ boolean\ indicating\ whether\ it\ is\ daytime.\n
+comment1.text=\r\n\ Create\ a\ new\ plant\ at\ location\ in\ field.\r\n\ \r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment2.params=isDay
+comment2.target=void\ grow(boolean)
+comment2.text=\r\n\ Make\ this\ plant\ grow\r\n\ @param\ isDay\ A\ boolean\ indicating\ whether\ it\ is\ daytime.\r\n
 comment3.params=
 comment3.target=Location\ getLocation()
-comment3.text=\n\ Return\ the\ plant's\ location.\n\ @return\ The\ plant's\ location.\n
+comment3.text=\r\n\ Return\ the\ plant's\ location.\r\n\ @return\ The\ plant's\ location.\r\n
 numComments=4

@@ -19,6 +19,8 @@ public class Lamb extends Animal
     private static final int MAX_AGE = 10;
     // The likelihood of a lamb breeding.
     private static final double BREEDING_PROBABILITY = 0.12;
+    //The likelihood of a lamb disease
+    private static final double DISEASE_PROBABILITY = 0.06;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 1;
     // number of steps a lamb can go before it has to eat again (5 days).
@@ -30,8 +32,6 @@ public class Lamb extends Animal
 
     // The lamb's age.
     private int age;
-    // The lamb's hunger.
-    private int foodLevel;
 
     /**
      * Create a new lamb. A lamb may be created with age
@@ -47,12 +47,13 @@ public class Lamb extends Animal
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(MAX_ACTIVITY_LEVEL);
+            setFoodLevel(rand.nextInt(MAX_ACTIVITY_LEVEL));
         }
         else {
             age = 0;
-            foodLevel = MAX_ACTIVITY_LEVEL;
-        }
+            setFoodLevel(MAX_ACTIVITY_LEVEL);
+        }        
+        setDiseaseProbability(DISEASE_PROBABILITY);
     }
     
     /**
@@ -63,6 +64,7 @@ public class Lamb extends Animal
     public void act(List<Animal> newLambs, boolean isDay, Weather weather)
     {
         if(isDay){
+            simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {
@@ -105,17 +107,6 @@ public class Lamb extends Animal
     }
 
     /**
-     * Make this lion more hungry. This could result in the lion's death.
-     */
-    private void incrementHunger()
-    {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
-    
-    /**
      * Increase the age.
      * This could result in the lamb's death.
      */
@@ -144,7 +135,7 @@ public class Lamb extends Animal
                 Grass grass = (Grass) plant;
                 if(grass.isEdible()) { 
                     //System.out.println("Before:\n Growth: "+ grass.getGrowth() + "  Food Level:" + foodLevel);
-                    foodLevel += grass.consume();
+                    setFoodLevel(getFoodLevel() + grass.consume());
                     grass.reset();
                     //System.out.println("After:\n Growth: "+ grass.getGrowth() + "   Lamb Level:" + foodLevel);
                     return where;

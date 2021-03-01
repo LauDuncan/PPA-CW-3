@@ -1,3 +1,4 @@
+
 import java.util.List;
 import java.util.Iterator;
 import java.util.Random;
@@ -19,6 +20,8 @@ public class Tiger extends Animal
     private static final int MAX_AGE = 15;
     // The likelihood of a tiger breeding.
     private static final double BREEDING_PROBABILITY = 0.15;
+    //The likelihood of a tiger disease
+    private static final double DISEASE_PROBABILITY = 0.04;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single lamb. In effect, this is the
@@ -30,8 +33,6 @@ public class Tiger extends Animal
     // Individual characteristics (instance fields).
     // The tiger's age.
     private int age;
-    // The tiger's food level, which is increased by eating lambs.
-    private int foodLevel;
 
     /**
      * Create a tiger. A tiger can be created as a new born (age zero
@@ -46,12 +47,13 @@ public class Tiger extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(LAMB_FOOD_VALUE);
+            setFoodLevel(rand.nextInt(LAMB_FOOD_VALUE));
         }
         else {
             age = 0;
-            foodLevel = LAMB_FOOD_VALUE;
+            setFoodLevel(LAMB_FOOD_VALUE);
         }
+        setDiseaseProbability(DISEASE_PROBABILITY);
     }
     
     /**
@@ -64,6 +66,7 @@ public class Tiger extends Animal
     public void act(List<Animal> newTigers, boolean isDay, Weather weather)
     {
         if(isDay){
+            simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {
@@ -116,17 +119,7 @@ public class Tiger extends Animal
         }
     }
     
-    /**
-     * Make this tiger more hungry. This could result in the tiger's death.
-     */
-    private void incrementHunger()
-    {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
-    
+
     /**
      * Look for lambs adjacent to the current location.
      * Only the first live lamb is eaten.
@@ -144,7 +137,7 @@ public class Tiger extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    foodLevel += LAMB_FOOD_VALUE;
+                    setFoodLevel(getFoodLevel() + LAMB_FOOD_VALUE) ;
                     return where;
                 }
             }

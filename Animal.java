@@ -15,7 +15,11 @@ public abstract class Animal
     private Field field;
     // The animal's position in the field.
     private Location location;
-    
+    //indicate the animal has disease
+    private Boolean hasDisease = null;
+    private double diseaseProbability;
+    // The animal's food level, which is increased by eating another animal.
+    private int foodLevel;
     /**
      * Create a new animal at location in field.
      * 
@@ -101,6 +105,56 @@ public abstract class Animal
     }
     
     /**
+     * Make this lion more hungry. This could result in the lion's death.
+     */
+    protected void incrementHunger()
+    {
+        if(hasDisease() != null && hasDisease() == true){
+            foodLevel = foodLevel -2; 
+        }
+        else{
+            foodLevel--;
+        }
+        
+        if(foodLevel <= 0) {
+            setDead();
+        }
+    }
+    
+    /**
+     * Return if the animal has disease
+     */
+    protected Boolean hasDisease()
+    {
+        return this.hasDisease;
+    }
+    
+    protected void setHasDisease(Boolean hasDisease)
+    {
+        this.hasDisease = hasDisease;
+    }
+    /**
+     * Simulate disease for any animal
+     */
+    protected void simulateDisease()
+    {        
+        if(this.hasDisease == null){
+            Random rd = new Random();
+            this.hasDisease = rd.nextDouble() < getDiseaseProbability();
+        }
+        if(this.hasDisease  ){
+            List<Location> neighbours = field.adjacentLocations(this.getLocation());        
+            for(Location neighbour : neighbours){ //load each neighbour's location
+                if(neighbour != null){ //check the grid exist or not
+                    Object object = field.getObjectAt(neighbour);
+                    if(object != null && object instanceof Animal){
+                        ((Animal)object).setHasDisease(true);
+                    }
+                }
+            }
+        }
+    }
+    /**
      * Place the animal at the new location in the given field.
      * @param newLocation The animal's new location.
      */
@@ -120,5 +174,34 @@ public abstract class Animal
     protected Field getField()
     {
         return field;
+    }
+    
+    /**
+     * Get the disease probability
+     */
+    protected double getDiseaseProbability()
+    {
+        return diseaseProbability;
+    }
+    
+    /**
+     * Return the disease probability
+     */
+    protected void setDiseaseProbability(double diseaseProbability)
+    {
+        this.diseaseProbability = diseaseProbability;
+    }
+    
+    protected int getFoodLevel()
+    {
+        return foodLevel;
+    }
+    
+    /**
+     * Return the disease probability
+     */
+    protected void setFoodLevel(int foodLevel)
+    {
+        this.foodLevel = foodLevel;
     }
 }

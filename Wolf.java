@@ -19,6 +19,8 @@ public class Wolf extends Animal
     private static final int MAX_AGE = 15;
     // The likelihood of a wolf breeding.
     private static final double BREEDING_PROBABILITY = 0.15;
+    //The likelihood of a wolf disease
+    private static final double DISEASE_PROBABILITY = 0.05;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single cow. In effect, this is the
@@ -30,8 +32,6 @@ public class Wolf extends Animal
     // Individual characteristics (instance fields).
     // The wolf's age.
     private int age;
-    // The wolf's food level, which is increased by eating cows.
-    private int foodLevel;
 
     /**
      * Create a wolf. A wolf can be created as a new born (age zero
@@ -46,12 +46,13 @@ public class Wolf extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(COW_FOOD_VALUE);
+            setFoodLevel(rand.nextInt(COW_FOOD_VALUE));
         }
         else {
             age = 0;
-            foodLevel = COW_FOOD_VALUE;
+            setFoodLevel(COW_FOOD_VALUE);
         }
+        setDiseaseProbability(DISEASE_PROBABILITY);
     }
 
     /**
@@ -64,6 +65,7 @@ public class Wolf extends Animal
     public void act(List<Animal> newWolves, boolean isDay, Weather weather)
     {
         if(isDay){
+            simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {
@@ -116,16 +118,6 @@ public class Wolf extends Animal
         }
     }
 
-    /**
-     * Make this wolf more hungry. This could result in the wolf's death.
-     */
-    private void incrementHunger()
-    {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
 
     /**
      * Look for cows adjacent to the current location.
@@ -144,7 +136,7 @@ public class Wolf extends Animal
                 Cow cow = (Cow) animal;
                 if(cow.isAlive()) { 
                     cow.setDead();
-                    foodLevel = COW_FOOD_VALUE;
+                    setFoodLevel(getFoodLevel()+COW_FOOD_VALUE);
                     return where;
                 }
             }

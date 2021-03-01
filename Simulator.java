@@ -148,6 +148,7 @@ public class Simulator
         for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
             Animal animal = it.next();
             animal.act(newAnimals, isDay, currentWeather);
+            animal.setHasDisease(null);
             if(! animal.isAlive()) {
                 it.remove();
             }

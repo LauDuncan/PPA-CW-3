@@ -19,6 +19,8 @@ public class Lion extends Animal
     private static final int MAX_AGE = 20;
     // The likelihood of a lion breeding.
     private static final double BREEDING_PROBABILITY = 0.15;
+    //The likelihood of a lion disease
+    private static final double DISEASE_PROBABILITY = 0.03;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single lamb. In effect, this is the
@@ -30,8 +32,8 @@ public class Lion extends Animal
     // Individual characteristics (instance fields).
     // The lion's age.
     private int age;
-    // The lion's food level, which is increased by eating lambs.
-    private int foodLevel;
+    
+    
 
     /**
      * Create a lion. A lion can be created as a new born (age zero
@@ -46,12 +48,13 @@ public class Lion extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            foodLevel = rand.nextInt(FOOD_VALUE);
+            setFoodLevel(rand.nextInt(FOOD_VALUE));
         }
         else {
             age = 0;
-            foodLevel = FOOD_VALUE;
+            setFoodLevel(FOOD_VALUE);
         }
+        setDiseaseProbability(DISEASE_PROBABILITY);
     }
 
     /**
@@ -65,6 +68,7 @@ public class Lion extends Animal
     public void act(List<Animal> newLions, boolean isDay, Weather weather)
     {
         if(isDay){
+            simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {
@@ -118,17 +122,6 @@ public class Lion extends Animal
     }
 
     /**
-     * Make this lion more hungry. This could result in the lion's death.
-     */
-    private void incrementHunger()
-    {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
-
-    /**
      * Look for lambs adjacent to the current location.
      * Only the first live lamb is eaten.
      * @return Where food was found, or null if it wasn't.
@@ -145,7 +138,7 @@ public class Lion extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    foodLevel += FOOD_VALUE;
+                    setFoodLevel(getFoodLevel()+FOOD_VALUE);
                     return where;
                 }
             }
