@@ -60,6 +60,7 @@ public class Lion extends Animal
      * Only the first live lamb is eaten.
      * @return Where food was found, or null if it wasn't.
      */
+    @Override
     protected Location findFood()
     {
         Field field = getField();
@@ -85,6 +86,7 @@ public class Lion extends Animal
      * New births will be made into free adjacent locations.
      * @param newLions A list to return newly born lions.
      */
+    @Override
     protected void giveBirth(List<Animal> newLions)
     {
         // New lions are born into adjacent locations.

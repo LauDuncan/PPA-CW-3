@@ -51,6 +51,7 @@ public class Lamb extends Animal
         setBreedingProbability(BREEDING_PROBABILITY);
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
+        setMaxAge(MAX_AGE);
     }
 
     
@@ -59,6 +60,7 @@ public class Lamb extends Animal
      * Only one grass cell is eaten.
      * @return Where food was found, or null if it wasn't.
      */
+     @Override
     protected Location findFood()
     {
         Field field = getField();
@@ -86,6 +88,7 @@ public class Lamb extends Animal
      * New births will be made into free adjacent locations.
      * @param newLambs A list to return newly born lambs.
      */
+    @Override
     protected void giveBirth(List<Animal> newLambs)
     {
         // New lambs are born into adjacent locations.

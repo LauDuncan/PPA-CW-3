@@ -52,7 +52,7 @@ public class Wolf extends Animal
         setBreedingProbability(BREEDING_PROBABILITY);
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
-        
+        setMaxAge(MAX_AGE);
     }
 
     /**
@@ -60,6 +60,7 @@ public class Wolf extends Animal
      * Only the first live cow is eaten.
      * @return Where food was found, or null if it wasn't.
      */
+    @Override
     protected Location findFood()
     {
         Field field = getField();
@@ -85,6 +86,7 @@ public class Wolf extends Animal
      * New births will be made into free adjacent locations.
      * @param newWolves A list to return newly born wolves.
      */
+    @Override
     protected void giveBirth(List<Animal> newWolves)
     {
         // New wolves are born into adjacent locations.

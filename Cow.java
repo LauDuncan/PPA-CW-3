@@ -51,6 +51,7 @@ public class Cow extends Animal
         setBreedingProbability(BREEDING_PROBABILITY);
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
+        setMaxAge(MAX_AGE);
     }
 
     /**
@@ -58,6 +59,7 @@ public class Cow extends Animal
      * Only one grass cell is eaten.
      * @return Where food was found, or null if it wasn't.
      */
+    @Override
     protected Location findFood()
     {
         Field field = getField();
@@ -85,6 +87,7 @@ public class Cow extends Animal
      * New births will be made into free adjacent locations.
      * @param newCows A list to return newly born cows.
      */
+    @Override
     protected void giveBirth(List<Animal> newCows)
     {
         // New cows are born into adjacent locations.

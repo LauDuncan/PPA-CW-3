@@ -69,14 +69,14 @@ public abstract class Animal
      * @param isDay A boolean to indicate whether it is daytime
      */
 
-    public void act(List<Animal> newLions, boolean isDay, Weather weather)
+    public void act(List<Animal> newAnimals, boolean isDay, Weather weather)
     {
         if(isDay){
             simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {                
-                giveBirth(newLions);            
+                giveBirth(newAnimals);            
                 routine(weather);
             }
         }
@@ -289,15 +289,15 @@ public abstract class Animal
     }
     
     /**
-     * Get the disease probability
+     * Get the breeding probability
      */
     protected double getBreedingProbability()
     {
-        return diseaseProbability;
+        return breedingProbability;
     }
     
     /**
-     * Sets the probability of the animal catching the disease
+     * Sets the probability of the animal breeding
      */
     protected void setBreedingProbability(double breedingProbability)
     {
@@ -305,7 +305,7 @@ public abstract class Animal
     }  
     
     /**
-     * Get the disease probability
+     * Get the maximum number of births
      */
     protected int getMaxLitterSize()
     {
@@ -313,7 +313,7 @@ public abstract class Animal
     }
     
     /**
-     * Sets the probability of the animal catching the disease
+     * Sets the maximum number of births
      */
     protected void setMaxLitterSize(int maxLitterSize)
     {
@@ -337,7 +337,7 @@ public abstract class Animal
     }
     
     /**
-     * Get the age
+     * Get the maximum age
      */
     protected int getMaxAge()
     {
@@ -345,7 +345,7 @@ public abstract class Animal
     }
     
     /**
-     * Sets the age
+     * Sets the maximum age
      */
     protected void setMaxAge(int maxAge)
     {
@@ -353,7 +353,7 @@ public abstract class Animal
     }
     
     /**
-     * Get the disease probability
+     * Get the breeding probability
      */
     protected double getBreedingAge()
     {
@@ -361,7 +361,7 @@ public abstract class Animal
     }
     
     /**
-     * Sets the probability of the animal catching the disease
+     * Sets the probability of the animal breeding
      */
     protected void setBreedingAge(double breedingAge)
     {
