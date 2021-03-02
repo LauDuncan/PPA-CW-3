@@ -6,8 +6,8 @@ import java.util.Random;
  * A simple model of a lamb.
  * Lambs age, move, breed, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Liu Jie Xi and Lau Ying Hei
+ * @version 2021.02.20
  */
 public class Lamb extends Animal
 {
@@ -23,7 +23,7 @@ public class Lamb extends Animal
     private static final double DISEASE_PROBABILITY = 0.06;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 1;
-    // number of steps a lamb can go before it has to eat again (5 days).
+    // number of steps a lamb can go before it has to eat again.
     private static final int MAX_ACTIVITY_LEVEL = 10;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();

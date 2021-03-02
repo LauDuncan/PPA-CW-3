@@ -19,13 +19,16 @@ public class Field
     
     // The depth and width of the field.
     private int depth, width;
+    
     // Storage for the animals.
     private Object[][] field;
-    //storage for the plants.
+    
+    //Storage for the plants.
     private HashMap<Location, Plant> plants;
 
     /**
      * Represent a field of the given dimensions.
+     * 
      * @param depth The depth of the field.
      * @param width The width of the field.
      */
@@ -62,6 +65,7 @@ public class Field
      * Place an animal at the given location.
      * If there is already an animal at the location it will
      * be lost.
+     * 
      * @param animal The animal to be placed.
      * @param row Row coordinate of the location.
      * @param col Column coordinate of the location.
@@ -75,6 +79,7 @@ public class Field
      * Place an animal at the given location.
      * If there is already an animal at the location it will
      * be lost.
+     * 
      * @param animal The animal to be placed.
      * @param location Where to place the animal.
      */
@@ -85,6 +90,7 @@ public class Field
     
     /**
      * Return the animal at the given location, if any.
+     * 
      * @param location Where in the field.
      * @return The animal at the given location, or null if there is none.
      */
@@ -95,6 +101,7 @@ public class Field
     
     /**
      * Return the animal at the given location, if any.
+     * 
      * @param row The desired row.
      * @param col The desired column.
      * @return The animal at the given location, or null if there is none.
@@ -109,6 +116,7 @@ public class Field
      * given location, or is the same location.
      * The returned location will be within the valid bounds
      * of the field.
+     * 
      * @param location The location from which to generate an adjacency.
      * @return A valid location within the grid area.
      */
@@ -120,6 +128,7 @@ public class Field
     
     /**
      * Get a shuffled list of the free adjacent locations.
+     * 
      * @param location Get locations adjacent to this.
      * @return A list of free adjacent locations.
      */
@@ -140,6 +149,7 @@ public class Field
      * given location. If there is none, return null.
      * The returned location will be within the valid bounds
      * of the field.
+     * 
      * @param location The location from which to generate an adjacency.
      * @return A valid location within the grid area.
      */
@@ -159,6 +169,7 @@ public class Field
      * Return a shuffled list of locations adjacent to the given one.
      * The list will not include the location itself.
      * All locations will lie within the grid.
+     * 
      * @param location The location from which to generate adjacencies.
      * @return A list of locations adjacent to that given.
      */
@@ -192,6 +203,8 @@ public class Field
     
     /**
      * Return the plants map
+     * 
+     * @return A map of all plant locations.
      */
     public HashMap<Location, Plant> getPlants()
     {

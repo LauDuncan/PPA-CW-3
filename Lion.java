@@ -6,8 +6,8 @@ import java.util.Random;
  * A simple model of a lion.
  * Lions age, move, eat lambs, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Liu Jie Xi and Lau Ying Hei
+ * @version 2021.02.20
  */
 public class Lion extends Animal
 {
@@ -19,13 +19,12 @@ public class Lion extends Animal
     private static final int MAX_AGE = 20;
     // The likelihood of a lion breeding.
     private static final double BREEDING_PROBABILITY = 0.15;
-    //The likelihood of a lion disease
+    // The likelihood of a lion contracting a disease
     private static final double DISEASE_PROBABILITY = 0.03;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 2;
-    // The food value of a single lamb. In effect, this is the
-    // number of steps a lion can go before it has to eat again.
-    private static final int FOOD_VALUE = 9;
+    // The number of steps a lion can go before it has to eat again.
+    private static final int MAX_ACTIVITY_LEVEL = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -33,8 +32,6 @@ public class Lion extends Animal
     // The lion's age.
     private int age;
     
-    
-
     /**
      * Create a lion. A lion can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
@@ -48,27 +45,28 @@ public class Lion extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            setFoodLevel(rand.nextInt(FOOD_VALUE));
+            setFoodLevel(rand.nextInt(MAX_ACTIVITY_LEVEL));
         }
         else {
             age = 0;
-            setFoodLevel(FOOD_VALUE);
+            setFoodLevel(MAX_ACTIVITY_LEVEL);
         }
         setDiseaseProbability(DISEASE_PROBABILITY);
     }
 
     /**
-     * This is what the lion does most of the time: it hunts for
-     * lambs. In the process, it might breed, die of hunger,
-     * or die of old age.
+     * This is what the lion does most of the time: it will age, breed, and hunt,
+     * but this will also be altered by the weather of the field.
+     * 
+     * The lion will hunt during the day and sleep during the night.
      * 
      * @param newLions A list to return newly born lions.
-     * @param isDay A boolean to indicate whether it is daytime
+     * @param isDay A boolean to indicate whether it is daytime.
+     * @param weather A Weather object that will alter the lion's actions.
      */
     public void act(List<Animal> newLions, boolean isDay, Weather weather)
     {
         if(isDay){
-            //simulateDisease();
             incrementAge();
             incrementHunger();
             if(isAlive()) {
@@ -83,8 +81,16 @@ public class Lion extends Animal
         }
     }
 
+    /**
+     * This is the movement routine of the lion, it will be able to hunt or move freely 
+     * if there are no restrctions posed by the weather.
+     * 
+     * If there's no space for the lion to move, then the lion will die of overcrowding.
+     * 
+     * @param weather A Weather object that will change the lion's movement
+     */
     private void routine(Weather weather)
-    {      
+    {
         Location newLocation = null;
         // Checks whether the weather has a effect on the animal's food gathering behaviour.
         if(weather != null){
@@ -124,7 +130,8 @@ public class Lion extends Animal
 
     /**
      * Look for lambs adjacent to the current location.
-     * Only the first live lamb is eaten.
+     * Only the first live lamb is eaten by the lion.
+     * 
      * @return Where food was found, or null if it wasn't.
      */
     private Location findFood()
@@ -139,7 +146,7 @@ public class Lion extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    setFoodLevel(getFoodLevel()+FOOD_VALUE);
+                    setFoodLevel(getFoodLevel()+MAX_ACTIVITY_LEVEL);
                     return where;
                 }
             }
@@ -150,6 +157,7 @@ public class Lion extends Animal
     /**
      * Check whether or not this lion is to give birth at this step.
      * New births will be made into free adjacent locations.
+     * 
      * @param newLions A list to return newly born lions.
      */
     private void giveBirth(List<Animal> newLions)
@@ -169,6 +177,7 @@ public class Lion extends Animal
     /**
      * Generate a number representing the number of births,
      * if it can breed.
+     * 
      * @return The number of births (may be zero).
      */
     private int breed()
@@ -182,6 +191,8 @@ public class Lion extends Animal
 
     /**
      * A lion can breed if it has reached the breeding age.
+     * 
+     * @return true if the lion has reached breeding age.
      */
     private boolean canBreed()
     {

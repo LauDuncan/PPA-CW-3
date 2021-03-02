@@ -1,19 +1,22 @@
 #BlueJ class context
 comment0.target=Grass
-comment0.text=\n\ Write\ a\ description\ of\ class\ Grass\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ Grass\ is\ a\ subclass\ of\ Plant.\n\ Grass\ can\ grow\ and\ be\ consumed,\ the\ growth\ rate\ of\ the\ grass\ \n\ will\ be\ influenced\ by\ the\ weather\ conditions\ of\ the\ field.\n\n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
 comment1.params=location
 comment1.target=Grass(Location)
 comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Grass\n
 comment2.params=
 comment2.target=int\ getGrowth()
+comment2.text=\n\ Return\ the\ current\ growth\ value\ of\ the\ plant\n\ \n\ @return\ The\ growth\ value\ of\ the\ plant\n
 comment3.params=isDay\ weather
 comment3.target=void\ grow(boolean,\ Weather)
+comment3.text=\n\ Simulates\ the\ growth\ of\ the\ plant,\ which\ can\ be\ affected\ by\ the\ time\ of\ day\ and\ weather.\n\ The\ plant\ will\ grow\ when\ there\ is\ sunlight,\ but\ this\ is\ not\ guaranteed\ due\ to\ the\ type\ of\ weather.\n\ \n\ @param\ isDay\ A\ boolean\ indicating\ whether\ it\ is\ day\ time\n\ @param\ weather\ A\ weather\ object\ that\ will\ vary\ the\ plant's\ growth\n
 comment4.params=
 comment4.target=void\ reset()
-comment4.text=\n\ Indicate\ that\ the\ plant\ just\ got\ eaten.\n\ The\ growth\ of\ the\ plant\ has\ been\ resetted.\n
+comment4.text=\n\ Indicates\ that\ the\ plant\ just\ got\ eaten.\n\ The\ growth\ of\ the\ plant\ will\ reset.\n
 comment5.params=
 comment5.target=boolean\ isEdible()
-comment5.text=\n\ Check\ whether\ the\ plant\ is\ edible.\n\ @return\ true\ if\ the\ plant\ is\ edible.\n
+comment5.text=\n\ Check\ whether\ the\ plant\ is\ edible,\ judging\ by\ its\ growth.\n\ \n\ @return\ true\ if\ the\ plant\ is\ edible\ by\ animals.\n
 comment6.params=
 comment6.target=int\ consume()
+comment6.text=\n\ Returns\ the\ amount\ of\ food\ level\ that\ will\ be\ incremented\ after\ the\ animal\ consumes\ this\ plant.\n\ \n\ @return\ A\ int\ that\ will\ represent\ the\ food\ value\ of\ this\ plant.\n
 numComments=7

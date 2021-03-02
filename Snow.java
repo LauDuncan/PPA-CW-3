@@ -1,9 +1,11 @@
 
 /**
- * Write a description of class Snow here.
+ * A simple model of the rain weather.
+ * Rain will cause plants to have an increased growth rate.
+ * Rain will not cause any movement and hunt restrictions on animals.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Liu Jie Xi and Lau Ying Hei
+ * @version 2021.02.20
  */
 public class Snow extends Weather
 {
@@ -24,18 +26,30 @@ public class Snow extends Weather
     }
 
     /**
+     * Returns a integer to increment the growth value of the plant by.
      * 
+     * @return A int that will indicate the growth of the plant
      */
     public int getGrowthEffect()
     {
         return GROWTH_EFFECT;
     }
     
+    /**
+     * Returns a boolean to indicate whether rain can restrict the animal from moving
+     * 
+     * @return true, since snow will cause movement restriction
+     */
     public boolean getMovementRestriction()
     {
         return MOVEMENT_RESTRICTION;
     }
     
+    /**
+     * Returns a boolean to indicate whether rain can restrict the animal from hunting
+     * 
+     * @return false, since snow will not cause hunting restriction
+     */
     public boolean getHuntRestriction()
     {
         return HUNT_RESTRICTION;   

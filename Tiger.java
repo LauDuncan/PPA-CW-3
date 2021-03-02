@@ -7,8 +7,8 @@ import java.util.Random;
  * A simple model of a tiger.
  * Tigers age, move, eat lambs, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Liu Jie Xi and Lau Ying Hei
+ * @version 2021.02.20
  */
 public class Tiger extends Animal
 {
@@ -26,7 +26,7 @@ public class Tiger extends Animal
     private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single lamb. In effect, this is the
     // number of steps a tiger can go before it has to eat again.
-    private static final int LAMB_FOOD_VALUE = 9;
+    private static final int MAX_ACTIVITY_LEVEL = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -47,11 +47,11 @@ public class Tiger extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            setFoodLevel(rand.nextInt(LAMB_FOOD_VALUE));
+            setFoodLevel(rand.nextInt(MAX_ACTIVITY_LEVEL));
         }
         else {
             age = 0;
-            setFoodLevel(LAMB_FOOD_VALUE);
+            setFoodLevel(MAX_ACTIVITY_LEVEL);
         }
         setDiseaseProbability(DISEASE_PROBABILITY);
     }
@@ -138,7 +138,7 @@ public class Tiger extends Animal
                 Lamb lamb = (Lamb) animal;
                 if(lamb.isAlive()) { 
                     lamb.setDead();
-                    setFoodLevel(getFoodLevel() + LAMB_FOOD_VALUE) ;
+                    setFoodLevel(getFoodLevel() + MAX_ACTIVITY_LEVEL) ;
                     return where;
                 }
             }

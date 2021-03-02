@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Weather
-comment0.text=\n\ Write\ a\ description\ of\ class\ Weather\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ A\ class\ representing\ shared\ characteristics\ of\ weather.\n\n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
 comment1.params=
 comment1.target=Weather()
 comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Weather\n

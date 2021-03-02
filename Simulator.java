@@ -16,20 +16,16 @@ public class Simulator
 {
     // Constants representing configuration information for the simulation.
     // The default width for the grid.
-    private static final int DEFAULT_WIDTH = 120;
+    private static final int DEFAULT_WIDTH = 180;
     // The default depth of the grid.
-    private static final int DEFAULT_DEPTH = 80;
-
-    private static final double GRASS_CREATION_PROBABILITY = 0.5;
-    // The probability that a lion will be created in any given grid position.
-    private static final double LION_CREATION_PROBABILITY = 0.01;
-    // The probability that a tiger will be created in any given grid position.
-    private static final double TIGER_CREATION_PROBABILITY = 0.015;
-    // The probability that a wolf will be created in any given grid position.
-    private static final double WOLF_CREATION_PROBABILITY = 0.03;
-    // The probability that a cow will be created in any given grid position.
+    private static final int DEFAULT_DEPTH = 120;
+    
+    //The probability that each object will be created.
+    private static final double GRASS_CREATION_PROBABILITY = 0.75;
+    private static final double LION_CREATION_PROBABILITY = 0.02;
+    private static final double TIGER_CREATION_PROBABILITY = 0.025;
+    private static final double WOLF_CREATION_PROBABILITY = 0.04;
     private static final double COW_CREATION_PROBABILITY = 0.1;    
-    // The probability that a lamb will be created in any given grid position.
     private static final double LAMB_CREATION_PROBABILITY = 0.15;    
 
     // The probability that there will be a weather event triggered.
@@ -37,14 +33,14 @@ public class Simulator
 
     // List of animals in the field.
     private List<Animal> animals;
-    // List of weather possible of triggering
+    // List of weathers possible of triggering
     private List<Weather> weatherList;
     // The current state of the field.
     private Field field;
 
     // The current step of the simulation.
     private int step;
-    //The current time of the simulation.
+    // Whether the current step is day time.
     private boolean isDay;
 
     // A graphical view of the simulation.
@@ -60,6 +56,7 @@ public class Simulator
 
     /**
      * Create a simulation field with the given size.
+     * 
      * @param depth Depth of the field. Must be greater than zero.
      * @param width Width of the field. Must be greater than zero.
      */
@@ -88,7 +85,7 @@ public class Simulator
     }
 
     /**
-     * Run the simulation from its current state for a reasonably long period.
+     * Run the simulation from its current state for a reasonably long period (500 Steps).
      */
     public void runLongSimulation()
     {
@@ -98,6 +95,7 @@ public class Simulator
     /**
      * Run the simulation from its current state for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
+     * 
      * @param numSteps The number of steps to run for.
      */
     public void simulate(int numSteps)
@@ -111,7 +109,7 @@ public class Simulator
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each
-     * animal.
+     * animal and plant.
      */
     public void simulateOneStep()
     {
@@ -129,17 +127,15 @@ public class Simulator
             timeOutput = " Day";
         }
 
-        // Randomizes the probability of a weather event
         Weather currentWeather = null;
         if (rand.nextDouble() <= WEATHER_TRIGGER_PROBABILITY){
-            currentWeather = weatherList.get(rand.nextInt(weatherList.size()));;
-            System.out.println(currentWeather.getClass());
+            currentWeather = weatherList.get(rand.nextInt(weatherList.size()));
         }
 
+        // Let all plants grow.
         for(Plant plant : field.getPlants().values()){
             plant.grow(isDay, currentWeather);
         }
-
 
         // Provide space for newborn animals.
         List<Animal> newAnimals = new ArrayList<>();  
@@ -176,7 +172,7 @@ public class Simulator
     }
 
     /**
-     * Randomly populate the field with lambs,tigers, wolves, cows, and lambs.
+     * Randomly populate the field with grass, lambs, tigers, wolves, cows, and lambs.
      */
     private void populate()
     {
@@ -213,6 +209,9 @@ public class Simulator
         }
     }
     
+    /**
+     * Initializes the list that stores all the weather objects
+     */
     private void initializeWeather()
     {
         Rain rain = new Rain();

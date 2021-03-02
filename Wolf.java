@@ -6,8 +6,8 @@ import java.util.Random;
  * A simple model of a wolf.
  * wolves age, move, eat cows, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Liu Jie Xi and Lau Ying Hei
+ * @version 2021.02.20
  */
 public class Wolf extends Animal
 {
@@ -25,7 +25,7 @@ public class Wolf extends Animal
     private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single cow. In effect, this is the
     // number of steps a wolf can go before it has to eat again.
-    private static final int COW_FOOD_VALUE = 9;
+    private static final int MAX_ACTIVITY_LEVEL = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -46,11 +46,11 @@ public class Wolf extends Animal
         super(field, location);
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
-            setFoodLevel(rand.nextInt(COW_FOOD_VALUE));
+            setFoodLevel(rand.nextInt(MAX_ACTIVITY_LEVEL));
         }
         else {
             age = 0;
-            setFoodLevel(COW_FOOD_VALUE);
+            setFoodLevel(MAX_ACTIVITY_LEVEL);
         }
         setDiseaseProbability(DISEASE_PROBABILITY);
     }
@@ -137,7 +137,7 @@ public class Wolf extends Animal
                 Cow cow = (Cow) animal;
                 if(cow.isAlive()) { 
                     cow.setDead();
-                    setFoodLevel(getFoodLevel()+COW_FOOD_VALUE);
+                    setFoodLevel(getFoodLevel()+MAX_ACTIVITY_LEVEL);
                     return where;
                 }
             }

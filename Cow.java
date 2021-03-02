@@ -6,8 +6,8 @@ import java.util.Iterator;
  * A simple model of a cow.
  * Cows age, move, breed, and die.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Liu Jie Xi and Lau Ying Hei
+ * @version 2021.02.20
  */
 public class Cow extends Animal
 {

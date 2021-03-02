@@ -4,26 +4,29 @@ import java.util.Random;
 /**
  * A class representing shared characteristics of animals.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author David J. Barnes and Michael Kölling (modified by Liu Jie Xi and Lau Ying Hei)
+ * @version 2016.02.29
  */
 public abstract class Animal
 {
-    // Whether the animal is alive or not.
+    // Indicates the animal's health and gender.
     private boolean alive, isMale;
+
     // The animal's field.
     private Field field;
+
     // The animal's position in the field.
     private Location location;
-    
-    //indicate the animal has disease
+
+    // Indicates whether the animal has a disease.
     private Boolean hasDisease = null;
     private double diseaseProbability;
-    
+
     // The animal's food level, which is increased by eating another animal.
     private int foodLevel;
     /**
      * Create a new animal at location in field.
+     * The gender of the animal will be randomly assigned.
      * 
      * @param field The field currently occupied.
      * @param location The location within the field.
@@ -36,12 +39,13 @@ public abstract class Animal
         Random rd = new Random();
         isMale = rd.nextBoolean();
     }
-    
+
     /**
-     * Check the adjacent cells of the current animal and the animal will be able to meet and breed
-     * if the current animal's neighbor is of the same species and opposite gender.
+     * Check the adjacent cells of the current animal. 
+     * The animal will be able to meet and breed if the current animal's neighbor 
+     * is of the same species and opposite gender.
      * 
-     * @return true if the animal can meet and breed.
+     * @return true if the animal can meet are of opposite genders.
      */
     public boolean canMeet()
     {
@@ -56,17 +60,19 @@ public abstract class Animal
         }
         return false;
     }
-        
+
     /**
-     * Make this animal act - that is: make it do
-     * whatever it wants/needs to do.
+     * Make this animal act, their actions will alter according to the time and weather.
+     * 
      * @param newAnimals A list to receive newly born animals.
      * @param isDay A boolean to indicate whether it is daytime
+     * @param weather A Weather object that will influence the animal's behaviour
      */
     abstract public void act(List<Animal> newAnimals, boolean isDay, Weather weather);
 
     /**
      * Check whether the animal is alive or not.
+     * 
      * @return true if the animal is still alive.
      */
     protected boolean isAlive()
@@ -76,7 +82,7 @@ public abstract class Animal
 
     /**
      * Indicate that the animal is no longer alive.
-     * It is removed from the field.
+     * It is then removed from the field.
      */
     protected void setDead()
     {
@@ -90,54 +96,63 @@ public abstract class Animal
 
     /**
      * Return the animal's location.
+     * 
      * @return The animal's location.
      */
     protected Location getLocation()
     {
         return location;
     }
-    
+
     /**
      * Return the boolean value of whether the animal is a male.
+     * 
      * @return true if the animal is a male.
      */
     protected boolean isMale()
     {
         return this.isMale;
     }
-    
+
     /**
-     * Make this lion more hungry. This could result in the lion's death.
+     * Makes the animal more hungry, they will die if their food level is below 0.
+     * When a animal contracted a disease, their food level will be further decremented.
      */
     protected void incrementHunger()
     {
         if(hasDisease() != null && hasDisease() == true){
-            foodLevel = foodLevel -2; 
+            foodLevel = foodLevel - 2; 
         }
         else{
             foodLevel--;
         }
-        
+
         if(foodLevel <= 0) {
             setDead();
         }
     }
-    
+
     /**
-     * Return if the animal has disease
+     * Return whether the animal has a disease
+     * 
+     * @return true if the animal has a disease
      */
     protected Boolean hasDisease()
     {
         return this.hasDisease;
     }
-    
+
+    /**
+     * Sets the animal to have a disease
+     */
     protected void setHasDisease(Boolean hasDisease)
     {
         this.hasDisease = hasDisease;
     }
-    
+
     /**
-     * Simulate disease for any animal
+     * Simulate the probability of a animal contracting the disease, and the act of 
+     * spreading the disease around a diseased animal
      */
     protected void simulateDisease()
     {        
@@ -145,7 +160,7 @@ public abstract class Animal
             Random rd = new Random();
             this.hasDisease = rd.nextDouble() < getDiseaseProbability();
         }
-        
+
         if(this.hasDisease){
             List<Location> neighbours = field.adjacentLocations(this.getLocation());        
             for(Location neighbour : neighbours){ //load each neighbour's location
@@ -158,9 +173,10 @@ public abstract class Animal
             }
         }
     }
-    
+
     /**
      * Place the animal at the new location in the given field.
+     * 
      * @param newLocation The animal's new location.
      */
     protected void setLocation(Location newLocation)
@@ -171,24 +187,27 @@ public abstract class Animal
         location = newLocation;
         field.place(this, newLocation);
     }
-    
+
     /**
      * Return the animal's field.
+     * 
      * @return The animal's field.
      */
     protected Field getField()
     {
         return field;
     }
-    
+
     /**
-     * Get the disease probability
+     * Returns the probability of contracting the disease
+     * 
+     * @return The possibility of a animal contracting a disease.
      */
     protected double getDiseaseProbability()
     {
         return diseaseProbability;
     }
-    
+
     /**
      * Sets the probability of the animal catching the disease
      */
@@ -196,7 +215,7 @@ public abstract class Animal
     {
         this.diseaseProbability = diseaseProbability;
     }
-    
+
     /**
      * Returns the current food level of the animal
      * 
@@ -206,7 +225,7 @@ public abstract class Animal
     {
         return foodLevel;
     }
-    
+
     /**
      * Sets the food level of the animal
      * 
