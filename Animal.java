@@ -9,6 +9,7 @@ import java.util.Random;
  */
 public abstract class Animal
 {
+    private static final Random RANDOM = new Random();
     // Indicates the animal's health and gender.
     private boolean alive, isMale;
 
@@ -22,8 +23,15 @@ public abstract class Animal
     private Boolean hasDisease = null;
     private double diseaseProbability;
 
+    private double breedingProbability;
+    private int maxLitterSize;
+    private double breedingAge;
+    private int maxAge;
+
     // The animal's food level, which is increased by eating another animal.
     private int foodLevel;
+    // The animal's age.
+    private int age;
     /**
      * Create a new animal at location in field.
      * The gender of the animal will be randomly assigned.
@@ -36,8 +44,7 @@ public abstract class Animal
         alive = true;
         this.field = field;
         setLocation(location);
-        Random rd = new Random();
-        isMale = rd.nextBoolean();
+        isMale = RANDOM.nextBoolean();
     }
 
     /**
@@ -68,8 +75,56 @@ public abstract class Animal
      * @param isDay A boolean to indicate whether it is daytime
      * @param weather A Weather object that will influence the animal's behaviour
      */
-    abstract public void act(List<Animal> newAnimals, boolean isDay, Weather weather);
 
+    public void act(List<Animal> newAnimals, boolean isDay, Weather weather)
+    {
+        if(isDay){
+            simulateDisease();
+            incrementAge();
+            incrementHunger();
+            if(isAlive()) {                
+                giveBirth(newAnimals);            
+                routine(weather);
+            }
+        }
+        else{
+            // Animal sleeps
+            incrementHunger();
+        }
+    }
+
+    protected void routine(Weather weather)
+    {      
+        Location newLocation = null;
+        // Checks whether the weather has a effect on the animal's food gathering behaviour.
+        if(weather != null){
+            if(! weather.getHuntRestriction()){
+                newLocation = findFood();
+            }
+            else if(! weather.getMovementRestriction()){
+                newLocation = getLocation();
+            }
+        }
+        
+        if(newLocation == null) { 
+            // No food found - try to move to a free location.
+            newLocation = getField().freeAdjacentLocation(getLocation());
+        }
+
+        // See if it was possible to move.
+        if(newLocation != null) {
+            setLocation(newLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
+        }
+    }
+    
+    abstract protected Location findFood();
+    
+    abstract protected void giveBirth(List<Animal> newAnimal);
+    
     /**
      * Check whether the animal is alive or not.
      * 
@@ -156,12 +211,17 @@ public abstract class Animal
      */
     protected void simulateDisease()
     {        
-        if(this.hasDisease == null){
-            Random rd = new Random();
-            this.hasDisease = rd.nextDouble() < getDiseaseProbability();
+        if (!isAlive())
+        {
+            return;
         }
+        
+        if(this.hasDisease() == null){
+            setHasDisease(RANDOM.nextDouble() < getDiseaseProbability());
+        }
+        
+        if(this.hasDisease  ){
 
-        if(this.hasDisease){
             List<Location> neighbours = field.adjacentLocations(this.getLocation());        
             for(Location neighbour : neighbours){ //load each neighbour's location
                 if(neighbour != null){ //check the grid exist or not
@@ -171,6 +231,40 @@ public abstract class Animal
                     }
                 }
             }
+        }
+    }
+
+        /**
+     * Generate a number representing the number of births,
+     * if it can breed.
+     * @return The number of births (may be zero).
+     */
+    protected int breed()
+    {
+        int births = 0;
+        if(RANDOM.nextDouble() <= breedingProbability && canBreed() && canMeet()) {
+            births = RANDOM.nextInt(maxLitterSize) + 1;
+        }
+        return births;
+    }
+
+    /**
+     * A lion can breed if it has reached the breeding age.
+     */
+    protected boolean canBreed()
+    {
+        return age >= breedingAge;
+    }
+
+
+    /**
+     * Increase the age. This could result in the lion's death.
+     */
+    protected void incrementAge()
+    {
+        setAge(getAge()+1);
+        if(getAge() > maxAge) {
+            setDead();
         }
     }
 
@@ -214,6 +308,86 @@ public abstract class Animal
     protected void setDiseaseProbability(double diseaseProbability)
     {
         this.diseaseProbability = diseaseProbability;
+    }
+
+    /**
+     * Get the breeding probability
+     */
+    protected double getBreedingProbability()
+    {
+        return breedingProbability;
+    }
+    
+    /**
+     * Sets the probability of the animal breeding
+     */
+    protected void setBreedingProbability(double breedingProbability)
+    {
+        this.breedingProbability =breedingProbability;
+    }  
+    
+    /**
+     * Get the maximum number of births
+     */
+    protected int getMaxLitterSize()
+    {
+        return maxLitterSize;
+    }
+    
+    /**
+     * Sets the maximum number of births
+     */
+    protected void setMaxLitterSize(int maxLitterSize)
+    {
+        this.maxLitterSize = maxLitterSize;
+    }
+    
+    /**
+     * Get the age
+     */
+    protected int getAge()
+    {
+        return age;
+    }
+    
+    /**
+     * Sets the age
+     */
+    protected void setAge(int age)
+    {
+        this.age = age;
+    }
+    
+    /**
+     * Get the maximum age
+     */
+    protected int getMaxAge()
+    {
+        return maxAge;
+    }
+    
+    /**
+     * Sets the maximum age
+     */
+    protected void setMaxAge(int maxAge)
+    {
+        this.maxAge = maxAge;
+    }
+    
+    /**
+     * Get the breeding probability
+     */
+    protected double getBreedingAge()
+    {
+        return breedingAge;
+    }
+    
+    /**
+     * Sets the probability of the animal breeding
+     */
+    protected void setBreedingAge(double breedingAge)
+    {
+        this.breedingAge = breedingAge;
     }
 
     /**

@@ -78,7 +78,7 @@ public class Simulator
         view.setColor(Lion.class, Color.YELLOW);
         view.setColor(Tiger.class, Color.ORANGE);
         view.setColor(Wolf.class, Color.DARK_GRAY);
-        view.setColor(Lamb.class, Color.GREEN);
+        view.setColor(Lamb.class, Color.RED);
         view.setColor(Cow.class, Color.LIGHT_GRAY);
         // Setup a valid starting point.
         reset();
