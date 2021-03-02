@@ -16,15 +16,18 @@ public class Cow extends Animal
     // The age at which a cow can start to breed.
     private static final int BREEDING_AGE = 2;
     // The age to which a cow can live.
-    private static final int MAX_AGE = 10;
+    private static final int MAX_AGE = 12;
     // The likelihood of a cow breeding.
     private static final double BREEDING_PROBABILITY = 0.3;
     //The likelihood of a cow disease
-    private static final double DISEASE_PROBABILITY = 0.06;
+    private static final double DISEASE_PROBABILITY = 0.08;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // number of steps a cow can go before it has to eat again (5 days).
     private static final int MAX_ACTIVITY_LEVEL = 10;
+    //Whether the animal will act during the night.
+    private static final boolean NIGHT_ACTIVITY = false;
+    
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -52,6 +55,7 @@ public class Cow extends Animal
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
         setMaxAge(MAX_AGE);
+        setNightActivity(NIGHT_ACTIVITY);
     }
 
     /**
@@ -71,10 +75,8 @@ public class Cow extends Animal
             if(plant instanceof Grass) {
                 Grass grass = (Grass) plant;
                 if(grass.isEdible()) { 
-                    //System.out.println("Before:\n Growth: "+ grass.getGrowth() + "  Food Level:" + foodLevel);
                     setFoodLevel(getFoodLevel() + grass.consume()) ;
                     grass.reset();
-                    //System.out.println("After:\n Growth: "+ grass.getGrowth() + "   Cow Level:" + foodLevel);
                     return where;
                 }
             }

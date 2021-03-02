@@ -16,17 +16,17 @@ public abstract class Animal
     // The animal's field.
     private Field field;
 
-    // The animal's position in the field.
+    // The animal's position in the field.  
     private Location location;
 
     // Indicates whether the animal has a disease.
     private Boolean hasDisease = null;
     private double diseaseProbability;
-
     private double breedingProbability;
     private int maxLitterSize;
-    private double breedingAge;
+    private int breedingAge;
     private int maxAge;
+    private boolean nightActivity;
 
     // The animal's food level, which is increased by eating another animal.
     private int foodLevel;
@@ -48,6 +48,31 @@ public abstract class Animal
     }
 
     /**
+     * Make this animal act, their actions will alter according to the time and weather.
+     * 
+     * @param newAnimals A list to receive newly born animals.
+     * @param isDay A boolean to indicate whether it is daytime
+     * @param weather A Weather object that will influence the animal's behaviour
+     */
+
+    public void act(List<Animal> newAnimals, boolean isDay, Weather weather)
+    {
+        if(checkActivity(isDay)){
+            simulateDisease();
+            incrementAge();
+            incrementHunger();
+            if(isAlive()) {                
+                giveBirth(newAnimals);            
+                routine(weather);
+            }
+        }
+        else{
+            // Animal sleeps
+            incrementHunger();
+        }
+    }
+    
+    /**
      * Check the adjacent cells of the current animal. 
      * The animal will be able to meet and breed if the current animal's neighbor 
      * is of the same species and opposite gender.
@@ -67,32 +92,25 @@ public abstract class Animal
         }
         return false;
     }
-
+    
     /**
-     * Make this animal act, their actions will alter according to the time and weather.
+     * Determines whether the animal will act given the time of day and the animal's night activity.
      * 
-     * @param newAnimals A list to receive newly born animals.
-     * @param isDay A boolean to indicate whether it is daytime
-     * @param weather A Weather object that will influence the animal's behaviour
+     * @param isDay A boolean indicating whether it is daytime
+     * @return true if the the value of isDay and night activity are different.
      */
-
-    public void act(List<Animal> newAnimals, boolean isDay, Weather weather)
-    {
-        if(isDay){
-            simulateDisease();
-            incrementAge();
-            incrementHunger();
-            if(isAlive()) {                
-                giveBirth(newAnimals);            
-                routine(weather);
-            }
-        }
-        else{
-            // Animal sleeps
-            incrementHunger();
-        }
+    protected boolean checkActivity(boolean isDay){
+        return isDay ^ getNightActivity(); // exclusive or operator
     }
 
+    /**
+     * This is the movement routine of the animal, it will be able to hunt or move freely 
+     * if there are no restrctions posed by the weather.
+     * 
+     * If there's no space for the animal to move, then the animal will die of overcrowding.
+     * 
+     * @param weather A Weather object that will change the animal's movement
+     */
     protected void routine(Weather weather)
     {      
         Location newLocation = null;
@@ -121,8 +139,20 @@ public abstract class Animal
         }
     }
     
+    /**
+     * Look for food sources adjacent to the current location.
+     * Only the food source is consumed by the animal.
+     * 
+     * @return Where food was found, or null if it wasn't.
+     */
     abstract protected Location findFood();
     
+    /**
+     * Check whether or not this animal is able to give birth at this step.
+     * New births will be made into free adjacent locations.
+     * 
+     * @param newAnimal A list to return newly born animals.
+     */
     abstract protected void giveBirth(List<Animal> newAnimal);
     
     /**
@@ -199,6 +229,8 @@ public abstract class Animal
 
     /**
      * Sets the animal to have a disease
+     * 
+     * @param hasDisease A boolean indicating whether the animal has contracted a disease
      */
     protected void setHasDisease(Boolean hasDisease)
     {
@@ -206,8 +238,8 @@ public abstract class Animal
     }
 
     /**
-     * Simulate the probability of a animal contracting the disease, and the act of 
-     * spreading the disease around a diseased animal
+     * Simulates the probability of a animal contracting the disease, and the act of 
+     * spreading the disease around the diseased animal
      */
     protected void simulateDisease()
     {        
@@ -221,7 +253,6 @@ public abstract class Animal
         }
         
         if(this.hasDisease  ){
-
             List<Location> neighbours = field.adjacentLocations(this.getLocation());        
             for(Location neighbour : neighbours){ //load each neighbour's location
                 if(neighbour != null){ //check the grid exist or not
@@ -234,9 +265,10 @@ public abstract class Animal
         }
     }
 
-        /**
+    /**
      * Generate a number representing the number of births,
      * if it can breed.
+     * 
      * @return The number of births (may be zero).
      */
     protected int breed()
@@ -249,7 +281,9 @@ public abstract class Animal
     }
 
     /**
-     * A lion can breed if it has reached the breeding age.
+     * An animal can breed if it has reached the breeding age.
+     * 
+     * @return true if the animal is old enough to breed
      */
     protected boolean canBreed()
     {
@@ -258,7 +292,7 @@ public abstract class Animal
 
 
     /**
-     * Increase the age. This could result in the lion's death.
+     * Increase the age. This could result in the animal's death.
      */
     protected void incrementAge()
     {
@@ -295,7 +329,7 @@ public abstract class Animal
     /**
      * Returns the probability of contracting the disease
      * 
-     * @return The possibility of a animal contracting a disease.
+     * @return The probability of the animal contracting a disease.
      */
     protected double getDiseaseProbability()
     {
@@ -303,7 +337,9 @@ public abstract class Animal
     }
 
     /**
-     * Sets the probability of the animal catching the disease
+     * Sets the probability of the animal contracting a disease
+     * 
+     * @param diseaseProbability The probability of the animal contracting a disease
      */
     protected void setDiseaseProbability(double diseaseProbability)
     {
@@ -311,7 +347,9 @@ public abstract class Animal
     }
 
     /**
-     * Get the breeding probability
+     * Returns the breeding probability of the animal
+     * 
+     * @return The probability of the animal breeding
      */
     protected double getBreedingProbability()
     {
@@ -320,14 +358,18 @@ public abstract class Animal
     
     /**
      * Sets the probability of the animal breeding
+     * 
+     * @param breedingProbability The probability of the animal breeding
      */
     protected void setBreedingProbability(double breedingProbability)
     {
-        this.breedingProbability =breedingProbability;
+        this.breedingProbability = breedingProbability;
     }  
     
     /**
-     * Get the maximum number of births
+     * Returns the maximum number of births that the animal can have
+     * 
+     * @return The maximum number of births the animal can have in a step
      */
     protected int getMaxLitterSize()
     {
@@ -335,7 +377,9 @@ public abstract class Animal
     }
     
     /**
-     * Sets the maximum number of births
+     * Sets the maximum number of births that the animal can have in one step
+     * 
+     * @param maxLitterSize The maximum number of births that an animal can have in a single step
      */
     protected void setMaxLitterSize(int maxLitterSize)
     {
@@ -343,7 +387,9 @@ public abstract class Animal
     }
     
     /**
-     * Get the age
+     * Returns the age of the animal
+     * 
+     * @return The age of the animal
      */
     protected int getAge()
     {
@@ -351,7 +397,9 @@ public abstract class Animal
     }
     
     /**
-     * Sets the age
+     * Sets the age of the animal
+     * 
+     * @param age The age of the animal
      */
     protected void setAge(int age)
     {
@@ -359,7 +407,9 @@ public abstract class Animal
     }
     
     /**
-     * Get the maximum age
+     * Returns the maximum age of the animal
+     * 
+     * @return The maximum age of the animal
      */
     protected int getMaxAge()
     {
@@ -367,7 +417,9 @@ public abstract class Animal
     }
     
     /**
-     * Sets the maximum age
+     * Sets the maximum age of the animal
+     * 
+     * @param maxAge The maximum age of the animal
      */
     protected void setMaxAge(int maxAge)
     {
@@ -375,21 +427,41 @@ public abstract class Animal
     }
     
     /**
-     * Get the breeding probability
+     * Returns the breeding age of the animal
+     * 
+     * @return The breeding age of the animal
      */
-    protected double getBreedingAge()
+    protected int getBreedingAge()
     {
         return breedingAge;
     }
     
     /**
-     * Sets the probability of the animal breeding
+     * Sets the age of the animal that they have to reach before they can start breeding
      */
-    protected void setBreedingAge(double breedingAge)
+    protected void setBreedingAge(int breedingAge)
     {
         this.breedingAge = breedingAge;
     }
 
+    /**
+     * Returns the breeding age of the animal
+     * 
+     * @return The breeding age of the animal
+     */
+    protected boolean getNightActivity()
+    {
+        return nightActivity;
+    }
+    
+    /**
+     * Sets the age of the animal that they have to reach before they can start breeding
+     */
+    protected void setNightActivity(boolean nightActivity)
+    {
+        this.nightActivity = nightActivity;
+    }
+    
     /**
      * Returns the current food level of the animal
      * 

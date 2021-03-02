@@ -21,12 +21,15 @@ public class Tiger extends Animal
     // The likelihood of a tiger breeding.
     private static final double BREEDING_PROBABILITY = 0.2;
     //The likelihood of a tiger disease
-    private static final double DISEASE_PROBABILITY = 0.04;
+    private static final double DISEASE_PROBABILITY = 0.1;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 3;
     // The food value of a single lamb. In effect, this is the
     // number of steps a tiger can go before it has to eat again.
-    private static final int MAX_ACTIVITY_LEVEL = 9;
+    private static final int MAX_ACTIVITY_LEVEL = 21;
+    //Whether the animal will act during the night.
+    private static final boolean NIGHT_ACTIVITY = false;
+    
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -54,6 +57,7 @@ public class Tiger extends Animal
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
         setMaxAge(MAX_AGE);
+        setNightActivity(NIGHT_ACTIVITY);
     }
     
 

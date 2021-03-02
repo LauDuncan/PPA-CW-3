@@ -21,12 +21,12 @@ public class Simulator
     private static final int DEFAULT_DEPTH = 120;
     
     //The probability that each object will be created.
-    private static final double GRASS_CREATION_PROBABILITY = 0.75;
-    private static final double LION_CREATION_PROBABILITY = 0.02;
-    private static final double TIGER_CREATION_PROBABILITY = 0.025;
+    private static final double GRASS_CREATION_PROBABILITY = 0.8;
+    private static final double LION_CREATION_PROBABILITY = 0.055;
+    private static final double TIGER_CREATION_PROBABILITY = 0.07;
     private static final double WOLF_CREATION_PROBABILITY = 0.04;
-    private static final double COW_CREATION_PROBABILITY = 0.1;    
-    private static final double LAMB_CREATION_PROBABILITY = 0.15;    
+    private static final double COW_CREATION_PROBABILITY = 0.18;    
+    private static final double LAMB_CREATION_PROBABILITY = 0.2;    
 
     // The probability that there will be a weather event triggered.
     private static final double WEATHER_TRIGGER_PROBABILITY = 0.25;
@@ -40,7 +40,7 @@ public class Simulator
 
     // The current step of the simulation.
     private int step;
-    // Whether the current step is day time.
+    // Whether the current step is day time
     private boolean isDay;
 
     // A graphical view of the simulation.
@@ -78,7 +78,7 @@ public class Simulator
         view.setColor(Lion.class, Color.YELLOW);
         view.setColor(Tiger.class, Color.ORANGE);
         view.setColor(Wolf.class, Color.DARK_GRAY);
-        view.setColor(Lamb.class, Color.RED);
+        view.setColor(Lamb.class, Color.GREEN);
         view.setColor(Cow.class, Color.LIGHT_GRAY);
         // Setup a valid starting point.
         reset();
@@ -89,7 +89,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(500);
+        simulate(250);
     }
 
     /**
@@ -102,7 +102,7 @@ public class Simulator
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
             simulateOneStep();
-            delay(60);   // uncomment this to run more slowly
+            //delay(60);   // uncomment this to run more slowly
         }
     }
 
@@ -114,17 +114,14 @@ public class Simulator
     public void simulateOneStep()
     {
         Random rand = new Random();
-        String timeOutput = "";
         step++;
 
         // Changing the time of day according to the number of steps
         if(step % 2 == 0){
             isDay = false;
-            timeOutput = " Night";
         }
         else{
             isDay = true;
-            timeOutput = " Day";
         }
 
         Weather currentWeather = null;
@@ -152,8 +149,10 @@ public class Simulator
 
         // Add the newly born animals to the main lists.
         animals.addAll(newAnimals);
-
-        view.showStatus(step, timeOutput, field);
+        
+        String timeOutput = getTimeOutput();
+        String weatherOutput = getWeatherOutput(currentWeather);
+        view.showStatus(step, timeOutput, weatherOutput, field);
     }
 
     /**
@@ -168,7 +167,35 @@ public class Simulator
         populate();
 
         // Show the starting state in the view.
-        view.showStatus(step, " Day", field);
+        view.showStatus(step, " Day", " Normal", field);
+    }
+    
+    /**
+     * Returns the output string of the time
+     * 
+     * @return Output string of the time
+     */
+    private String getTimeOutput()
+    {
+        if(isDay){
+            return " Day";
+        }
+        return " Night";
+    }
+    
+    /**
+     * Returns the output string of the weather
+     * 
+     * @return Output string of the weather
+     */
+    private String getWeatherOutput(Weather weather)
+    {
+        if (weather == null){
+            return " Normal";
+        }
+        else{
+            return weather.getClass().getName();
+        }
     }
 
     /**

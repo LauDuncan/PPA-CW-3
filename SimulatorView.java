@@ -24,8 +24,9 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String TIME_PREFIX = "Time: ";
+    private final String WEATHER_PREFIX = "Weather: ";
     private final String POPULATION_PREFIX = "Population: ";
-    private JLabel stepLabel, timeLabel, population, infoLabel;
+    private JLabel stepLabel, timeLabel, weatherLabel, population, infoLabel;
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -43,9 +44,10 @@ public class SimulatorView extends JFrame
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
 
-        setTitle("Fox and Rabbit Simulation");
+        setTitle("Wildlife Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
+        weatherLabel = new JLabel(WEATHER_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
@@ -57,8 +59,14 @@ public class SimulatorView extends JFrame
         
         JPanel infoPane = new JPanel(new BorderLayout());
             infoPane.add(stepLabel, BorderLayout.WEST);
-            infoPane.add(timeLabel, BorderLayout.EAST);
             infoPane.add(infoLabel, BorderLayout.CENTER);
+            infoPane.add(timeLabel, BorderLayout.CENTER);
+            infoPane.add(weatherLabel, BorderLayout.EAST);
+            
+        //
+        
+            
+            
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
@@ -104,7 +112,7 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, String time, Field field)
+    public void showStatus(int step, String time, String weather, Field field)
     {
         if(!isVisible()) {
             setVisible(true);
@@ -112,6 +120,7 @@ public class SimulatorView extends JFrame
             
         stepLabel.setText(STEP_PREFIX + step);
         timeLabel.setText(TIME_PREFIX + time);
+        weatherLabel.setText(WEATHER_PREFIX + weather);
         stats.reset();
         
         fieldView.preparePaint();

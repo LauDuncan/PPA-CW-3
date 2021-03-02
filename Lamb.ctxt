@@ -1,13 +1,13 @@
 #BlueJ class context
 comment0.target=Lamb
-comment0.text=\r\n\ A\ simple\ model\ of\ a\ lamb.\r\n\ Lambs\ age,\ move,\ breed,\ and\ die.\r\n\ \r\n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\r\n\ @version\ 2016.02.29\ (2)\r\n
+comment0.text=\n\ A\ simple\ model\ of\ a\ lamb.\n\ Lambs\ age,\ move,\ breed,\ and\ die.\n\ \n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
 comment1.params=randomAge\ field\ location
 comment1.target=Lamb(boolean,\ Field,\ Location)
-comment1.text=\r\n\ Create\ a\ new\ lamb.\ A\ lamb\ may\ be\ created\ with\ age\r\n\ zero\ (a\ new\ born)\ or\ with\ a\ random\ age.\r\n\ \r\n\ @param\ randomAge\ If\ true,\ the\ lamb\ will\ have\ a\ random\ age.\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment1.text=\n\ Create\ a\ new\ lamb.\ A\ lamb\ may\ be\ created\ with\ age\n\ zero\ (a\ new\ born)\ or\ with\ a\ random\ age.\n\ \n\ @param\ randomAge\ If\ true,\ the\ lamb\ will\ have\ a\ random\ age.\n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
 comment2.params=
 comment2.target=Location\ findFood()
-comment2.text=\r\n\ Look\ for\ grass\ cells\ adjacent\ to\ the\ current\ location.\r\n\ Only\ one\ grass\ cell\ is\ eaten.\r\n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\r\n
+comment2.text=\n\ Look\ for\ grass\ cells\ adjacent\ to\ the\ current\ location.\n\ Only\ one\ grass\ cell\ is\ eaten.\n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\n
 comment3.params=newLambs
 comment3.target=void\ giveBirth(java.util.List)
-comment3.text=\r\n\ Check\ whether\ or\ not\ this\ lamb\ is\ to\ give\ birth\ at\ this\ step.\r\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\r\n\ @param\ newLambs\ A\ list\ to\ return\ newly\ born\ lambs.\r\n
+comment3.text=\n\ Check\ whether\ or\ not\ this\ lamb\ is\ to\ give\ birth\ at\ this\ step.\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\n\ @param\ newLambs\ A\ list\ to\ return\ newly\ born\ lambs.\n
 numComments=4

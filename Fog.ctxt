@@ -1,12 +1,12 @@
 #BlueJ class context
 comment0.target=Fog
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Fog\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\n\ A\ simple\ model\ of\ the\ rain\ weather.\n\ Rain\ will\ cause\ plants\ to\ have\ an\ increased\ growth\ rate.\n\ Rain\ will\ not\ cause\ any\ movement\ and\ hunt\ restrictions\ on\ animals.\n\n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
 comment1.params=
 comment1.target=Fog()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Rain\r\n
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Rain\n
 comment2.params=
 comment2.target=int\ getGrowthEffect()
-comment2.text=\r\n\ \r\n
+comment2.text=\n\ Returns\ a\ integer\ to\ increment\ the\ growth\ value\ of\ the\ plant\ by.\n\ \n\ @return\ A\ int\ that\ will\ indicate\ the\ growth\ of\ the\ plant\n
 comment3.params=
 comment3.target=boolean\ getMovementRestriction()
 comment3.text=\n\ Returns\ a\ boolean\ to\ indicate\ whether\ rain\ can\ restrict\ the\ animal\ from\ moving\n\ \n\ @return\ false,\ since\ fog\ will\ not\ cause\ movement\ restriction\n

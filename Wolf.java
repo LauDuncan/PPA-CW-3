@@ -14,18 +14,21 @@ public class Wolf extends Animal
     // Characteristics shared by all wolves (class variables).
 
     // The age at which a wolf can start to breed.
-    private static final int BREEDING_AGE = 3;
+    private static final int BREEDING_AGE = 2;
     // The age to which a wolf can live.
     private static final int MAX_AGE = 13;
     // The likelihood of a wolf breeding.
-    private static final double BREEDING_PROBABILITY = 0.2;
+    private static final double BREEDING_PROBABILITY = 0.18;
     //The likelihood of a wolf disease
-    private static final double DISEASE_PROBABILITY = 0.05;
+    private static final double DISEASE_PROBABILITY = 0.12;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 3;
     // The food value of a single cow. In effect, this is the
     // number of steps a wolf can go before it has to eat again.
-    private static final int MAX_ACTIVITY_LEVEL = 9;
+    private static final int MAX_ACTIVITY_LEVEL = 19;
+    //Whether the animal will act during the night.
+    private static final boolean NIGHT_ACTIVITY = true;
+    
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -53,6 +56,7 @@ public class Wolf extends Animal
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
         setMaxAge(MAX_AGE);
+        setNightActivity(NIGHT_ACTIVITY);
     }
 
     /**

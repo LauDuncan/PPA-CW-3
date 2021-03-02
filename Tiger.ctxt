@@ -1,13 +1,13 @@
 #BlueJ class context
 comment0.target=Tiger
-comment0.text=\r\n\ A\ simple\ model\ of\ a\ tiger.\r\n\ Tigers\ age,\ move,\ eat\ lambs,\ and\ die.\r\n\ \r\n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\r\n\ @version\ 2016.02.29\ (2)\r\n
+comment0.text=\n\ A\ simple\ model\ of\ a\ tiger.\n\ Tigers\ age,\ move,\ eat\ lambs,\ and\ die.\n\ \n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
 comment1.params=randomAge\ field\ location
 comment1.target=Tiger(boolean,\ Field,\ Location)
-comment1.text=\r\n\ Create\ a\ tiger.\ A\ tiger\ can\ be\ created\ as\ a\ new\ born\ (age\ zero\r\n\ and\ not\ hungry)\ or\ with\ a\ random\ age\ and\ food\ level.\r\n\ \r\n\ @param\ randomAge\ If\ true,\ the\ tiger\ will\ have\ random\ age\ and\ hunger\ level.\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment1.text=\n\ Create\ a\ tiger.\ A\ tiger\ can\ be\ created\ as\ a\ new\ born\ (age\ zero\n\ and\ not\ hungry)\ or\ with\ a\ random\ age\ and\ food\ level.\n\ \n\ @param\ randomAge\ If\ true,\ the\ tiger\ will\ have\ random\ age\ and\ hunger\ level.\n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
 comment2.params=
 comment2.target=Location\ findFood()
-comment2.text=\r\n\ Look\ for\ lambs\ adjacent\ to\ the\ current\ location.\r\n\ Only\ the\ first\ live\ lamb\ is\ eaten.\r\n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\r\n
+comment2.text=\n\ Look\ for\ lambs\ adjacent\ to\ the\ current\ location.\n\ Only\ the\ first\ live\ lamb\ is\ eaten.\n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\n
 comment3.params=newTigers
 comment3.target=void\ giveBirth(java.util.List)
-comment3.text=\r\n\ Check\ whether\ or\ not\ this\ tiger\ is\ to\ give\ birth\ at\ this\ step.\r\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\r\n\ @param\ newTigers\ A\ list\ to\ return\ newly\ born\ tigers.\r\n
+comment3.text=\n\ Check\ whether\ or\ not\ this\ tiger\ is\ to\ give\ birth\ at\ this\ step.\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\n\ @param\ newTigers\ A\ list\ to\ return\ newly\ born\ tigers.\n
 numComments=4

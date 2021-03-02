@@ -16,17 +16,20 @@ public class Lion extends Animal
     // The age at which a lion can start to breed.
     private static final int BREEDING_AGE = 2;
     // The age to which a lion can live.
-    private static final int MAX_AGE = 15;
+    private static final int MAX_AGE = 18;
     // The likelihood of a lion breeding.
 
-    private static final double BREEDING_PROBABILITY = 0.2;
+    private static final double BREEDING_PROBABILITY = 0.18;
     //The likelihood of a lion disease
 
-    private static final double DISEASE_PROBABILITY = 0.03;
+    private static final double DISEASE_PROBABILITY = 0.08;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 3;
     // The number of steps a lion can go before it has to eat again.
-    private static final int MAX_ACTIVITY_LEVEL = 9;
+    private static final int MAX_ACTIVITY_LEVEL = 20;
+    //Whether the animal will act during the night.
+    private static final boolean NIGHT_ACTIVITY = false;
+    
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -54,6 +57,7 @@ public class Lion extends Animal
         setMaxLitterSize(MAX_LITTER_SIZE);
         setBreedingAge(BREEDING_AGE);
         setMaxAge(MAX_AGE);
+        setNightActivity(NIGHT_ACTIVITY);
     }
 
     /**

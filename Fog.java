@@ -1,4 +1,3 @@
-
 /**
  * A simple model of the rain weather.
  * Rain will cause plants to have an increased growth rate.
