@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=Lion
+<<<<<<< Updated upstream
 comment0.text=\n\ A\ simple\ model\ of\ a\ lion.\n\ Lions\ age,\ move,\ eat\ lambs,\ and\ die.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 2016.02.29\ (2)\n
 comment1.params=randomAge\ field\ location
 comment1.target=Lion(boolean,\ Field,\ Location)
@@ -28,3 +29,16 @@ comment9.params=
 comment9.target=boolean\ canBreed()
 comment9.text=\n\ A\ lion\ can\ breed\ if\ it\ has\ reached\ the\ breeding\ age.\n
 numComments=10
+=======
+comment0.text=\n\ A\ simple\ model\ of\ a\ lion.\n\ Lions\ age,\ move,\ eat\ lambs,\ and\ die.\n\ \n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
+comment1.params=randomAge\ field\ location
+comment1.target=Lion(boolean,\ Field,\ Location)
+comment1.text=\n\ Create\ a\ lion.\ A\ lion\ can\ be\ created\ as\ a\ new\ born\ (age\ zero\n\ and\ not\ hungry)\ or\ with\ a\ random\ age\ and\ food\ level.\n\ \n\ @param\ randomAge\ If\ true,\ the\ lion\ will\ have\ random\ age\ and\ hunger\ level.\n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
+comment2.params=
+comment2.target=Location\ findFood()
+comment2.text=\n\ Look\ for\ lambs\ adjacent\ to\ the\ current\ location.\n\ Only\ the\ first\ live\ lamb\ is\ eaten\ by\ the\ lion.\n\ \n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\n
+comment3.params=newLions
+comment3.target=void\ giveBirth(java.util.List)
+comment3.text=\n\ Check\ whether\ or\ not\ this\ lion\ is\ to\ give\ birth\ at\ this\ step.\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\n\ \n\ @param\ newLions\ A\ list\ to\ return\ newly\ born\ lions.\n
+numComments=4
+>>>>>>> Stashed changes

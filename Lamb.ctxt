@@ -1,5 +1,6 @@
 #BlueJ class context
 comment0.target=Lamb
+<<<<<<< Updated upstream
 comment0.text=\n\ A\ simple\ model\ of\ a\ lamb.\n\ Lambs\ age,\ move,\ breed,\ and\ die.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 2016.02.29\ (2)\n
 comment1.params=randomAge\ field\ location
 comment1.target=Lamb(boolean,\ Field,\ Location)
@@ -28,3 +29,16 @@ comment9.params=
 comment9.target=boolean\ canBreed()
 comment9.text=\n\ A\ lamb\ can\ breed\ if\ it\ has\ reached\ the\ breeding\ age.\n\ @return\ true\ if\ the\ lamb\ can\ breed,\ false\ otherwise.\n
 numComments=10
+=======
+comment0.text=\n\ A\ simple\ model\ of\ a\ lamb.\n\ Lambs\ age,\ move,\ breed,\ and\ die.\n\ \n\ @author\ Liu\ Jie\ Xi\ and\ Lau\ Ying\ Hei\n\ @version\ 2021.02.20\n
+comment1.params=randomAge\ field\ location
+comment1.target=Lamb(boolean,\ Field,\ Location)
+comment1.text=\n\ Create\ a\ new\ lamb.\ A\ lamb\ may\ be\ created\ with\ age\n\ zero\ (a\ new\ born)\ or\ with\ a\ random\ age.\n\ \n\ @param\ randomAge\ If\ true,\ the\ lamb\ will\ have\ a\ random\ age.\n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
+comment2.params=
+comment2.target=Location\ findFood()
+comment2.text=\n\ Look\ for\ grass\ cells\ adjacent\ to\ the\ current\ location.\n\ Only\ one\ grass\ cell\ is\ eaten.\n\ @return\ Where\ food\ was\ found,\ or\ null\ if\ it\ wasn't.\n
+comment3.params=newLambs
+comment3.target=void\ giveBirth(java.util.List)
+comment3.text=\n\ Check\ whether\ or\ not\ this\ lamb\ is\ to\ give\ birth\ at\ this\ step.\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\n\ @param\ newLambs\ A\ list\ to\ return\ newly\ born\ lambs.\n
+numComments=4
+>>>>>>> Stashed changes
