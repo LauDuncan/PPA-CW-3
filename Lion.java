@@ -9,8 +9,7 @@ import java.util.Random;
  * @author Liu Jie Xi and Lau Ying Hei
  * @version 2021.02.20
  */
-public class Lion extends Animal
-{
+public class Lion extends Animal {
     // Characteristics shared by all lions (class variables).
 
     // The age at which a lion can start to breed.
@@ -29,7 +28,7 @@ public class Lion extends Animal
     private static final int MAX_ACTIVITY_LEVEL = 20;
     //Whether the animal will act during the night.
     private static final boolean NIGHT_ACTIVITY = false;
-    
+
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -41,14 +40,12 @@ public class Lion extends Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Lion(boolean randomAge, Field field, Location location)
-    {
+    public Lion(boolean randomAge, Field field, Location location) {
         super(field, location);
-        if(randomAge) {
+        if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
             setFoodLevel(rand.nextInt(MAX_ACTIVITY_LEVEL));
-        }
-        else {
+        } else {
             setAge(0);
             setFoodLevel(MAX_ACTIVITY_LEVEL);
         }
@@ -67,19 +64,18 @@ public class Lion extends Animal
      * @return Where food was found, or null if it wasn't.
      */
     @Override
-    protected Location findFood()
-    {
+    protected Location findFood() {
         Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
+        List < Location > adjacent = field.adjacentLocations(getLocation());
+        Iterator < Location > it = adjacent.iterator();
+        while (it.hasNext()) {
             Location where = it.next();
             Object animal = field.getObjectAt(where);
-            if(animal instanceof Lamb) {
+            if (animal instanceof Lamb) {
                 Lamb lamb = (Lamb) animal;
-                if(lamb.isAlive()) { 
+                if (lamb.isAlive()) {
                     lamb.setDead();
-                    setFoodLevel(getFoodLevel()+MAX_ACTIVITY_LEVEL);
+                    setFoodLevel(getFoodLevel() + MAX_ACTIVITY_LEVEL);
                     return where;
                 }
             }
@@ -94,14 +90,13 @@ public class Lion extends Animal
      * @param newLions A list to return newly born lions.
      */
     @Override
-    protected void giveBirth(List<Animal> newLions)
-    {
+    protected void giveBirth(List < Animal > newLions) {
         // New lions are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List < Location > free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
+        for (int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Lion young = new Lion(false, field, loc);
             newLions.add(young);

@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.Random; 
+import java.util.Random;
 
 /**
  * A class representing shared characteristics of animals.
@@ -7,8 +7,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling (modified by Liu Jie Xi and Lau Ying Hei)
  * @version 2016.02.29
  */
-public abstract class Animal
-{
+public abstract class Animal {
     private static final Random RANDOM = new Random();
     // Indicates the animal's health and gender.
     private boolean alive, isMale;
@@ -39,8 +38,7 @@ public abstract class Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Animal(Field field, Location location)
-    {
+    public Animal(Field field, Location location) {
         alive = true;
         this.field = field;
         setLocation(location);
@@ -55,23 +53,21 @@ public abstract class Animal
      * @param weather A Weather object that will influence the animal's behaviour
      */
 
-    public void act(List<Animal> newAnimals, boolean isDay, Weather weather)
-    {
-        if(checkActivity(isDay)){
+    public void act(List < Animal > newAnimals, boolean isDay, Weather weather) {
+        if (checkActivity(isDay)) {
             simulateDisease();
             incrementAge();
             incrementHunger();
-            if(isAlive()) {                
-                giveBirth(newAnimals);            
+            if (isAlive()) {
+                giveBirth(newAnimals);
                 routine(weather);
             }
-        }
-        else{
+        } else {
             // Animal sleeps
             incrementHunger();
         }
     }
-    
+
     /**
      * Check the adjacent cells of the current animal. 
      * The animal will be able to meet and breed if the current animal's neighbor 
@@ -79,27 +75,26 @@ public abstract class Animal
      * 
      * @return true if the animal can meet are of opposite genders.
      */
-    public boolean canMeet()
-    {
-        List<Location> neighbours = field.adjacentLocations(this.getLocation());
-        for(Location neighbour : neighbours){ //load each neighbour's location
-            if(neighbour != null){ //check the grid exist or not
+    public boolean canMeet() {
+        List < Location > neighbours = field.adjacentLocations(this.getLocation());
+        for (Location neighbour: neighbours) { //load each neighbour's location
+            if (neighbour != null) { //check the grid exist or not
                 Object object = field.getObjectAt(neighbour);
-                if(object != null && object.getClass().equals(this.getClass()) && ((Animal)object).isMale() != this.isMale()){
+                if (object != null && object.getClass().equals(this.getClass()) && ((Animal) object).isMale() != this.isMale()) {
                     return true;
                 }
             }
         }
         return false;
     }
-    
+
     /**
      * Determines whether the animal will act given the time of day and the animal's night activity.
      * 
      * @param isDay A boolean indicating whether it is daytime
      * @return true if the the value of isDay and night activity are different.
      */
-    protected boolean checkActivity(boolean isDay){
+    protected boolean checkActivity(boolean isDay) {
         return isDay ^ getNightActivity(); // exclusive or operator
     }
 
@@ -111,34 +106,31 @@ public abstract class Animal
      * 
      * @param weather A Weather object that will change the animal's movement
      */
-    protected void routine(Weather weather)
-    {      
+    protected void routine(Weather weather) {
         Location newLocation = null;
         // Checks whether the weather has a effect on the animal's food gathering behaviour.
-        if(weather != null){
-            if(! weather.getHuntRestriction()){
+        if (weather != null) {
+            if (!weather.getHuntRestriction()) {
                 newLocation = findFood();
-            }
-            else if(! weather.getMovementRestriction()){
+            } else if (!weather.getMovementRestriction()) {
                 newLocation = getLocation();
             }
         }
-        
-        if(newLocation == null) { 
+
+        if (newLocation == null) {
             // No food found - try to move to a free location.
             newLocation = getField().freeAdjacentLocation(getLocation());
         }
 
         // See if it was possible to move.
-        if(newLocation != null) {
+        if (newLocation != null) {
             setLocation(newLocation);
-        }
-        else {
+        } else {
             // Overcrowding.
             setDead();
         }
     }
-    
+
     /**
      * Look for food sources adjacent to the current location.
      * Only the food source is consumed by the animal.
@@ -146,22 +138,21 @@ public abstract class Animal
      * @return Where food was found, or null if it wasn't.
      */
     abstract protected Location findFood();
-    
+
     /**
      * Check whether or not this animal is able to give birth at this step.
      * New births will be made into free adjacent locations.
      * 
      * @param newAnimal A list to return newly born animals.
      */
-    abstract protected void giveBirth(List<Animal> newAnimal);
-    
+    abstract protected void giveBirth(List < Animal > newAnimal);
+
     /**
      * Check whether the animal is alive or not.
      * 
      * @return true if the animal is still alive.
      */
-    protected boolean isAlive()
-    {
+    protected boolean isAlive() {
         return alive;
     }
 
@@ -169,10 +160,9 @@ public abstract class Animal
      * Indicate that the animal is no longer alive.
      * It is then removed from the field.
      */
-    protected void setDead()
-    {
+    protected void setDead() {
         alive = false;
-        if(location != null) {
+        if (location != null) {
             field.clear(location);
             location = null;
             field = null;
@@ -184,8 +174,7 @@ public abstract class Animal
      * 
      * @return The animal's location.
      */
-    protected Location getLocation()
-    {
+    protected Location getLocation() {
         return location;
     }
 
@@ -194,8 +183,7 @@ public abstract class Animal
      * 
      * @return true if the animal is a male.
      */
-    protected boolean isMale()
-    {
+    protected boolean isMale() {
         return this.isMale;
     }
 
@@ -203,16 +191,14 @@ public abstract class Animal
      * Makes the animal more hungry, they will die if their food level is below 0.
      * When a animal contracted a disease, their food level will be further decremented.
      */
-    protected void incrementHunger()
-    {
-        if(hasDisease() != null && hasDisease() == true){
-            foodLevel = foodLevel - 2; 
-        }
-        else{
+    protected void incrementHunger() {
+        if (hasDisease() != null && hasDisease() == true) {
+            foodLevel = foodLevel - 2;
+        } else {
             foodLevel--;
         }
 
-        if(foodLevel <= 0) {
+        if (foodLevel <= 0) {
             setDead();
         }
     }
@@ -222,8 +208,7 @@ public abstract class Animal
      * 
      * @return true if the animal has a disease
      */
-    protected Boolean hasDisease()
-    {
+    protected Boolean hasDisease() {
         return this.hasDisease;
     }
 
@@ -232,8 +217,7 @@ public abstract class Animal
      * 
      * @param hasDisease A boolean indicating whether the animal has contracted a disease
      */
-    protected void setHasDisease(Boolean hasDisease)
-    {
+    protected void setHasDisease(Boolean hasDisease) {
         this.hasDisease = hasDisease;
     }
 
@@ -241,24 +225,22 @@ public abstract class Animal
      * Simulates the probability of a animal contracting the disease, and the act of 
      * spreading the disease around the diseased animal
      */
-    protected void simulateDisease()
-    {        
-        if (!isAlive())
-        {
+    protected void simulateDisease() {
+        if (!isAlive()) {
             return;
         }
-        
-        if(this.hasDisease() == null){
+
+        if (this.hasDisease() == null) {
             setHasDisease(RANDOM.nextDouble() < getDiseaseProbability());
         }
-        
-        if(this.hasDisease  ){
-            List<Location> neighbours = field.adjacentLocations(this.getLocation());        
-            for(Location neighbour : neighbours){ //load each neighbour's location
-                if(neighbour != null){ //check the grid exist or not
+
+        if (this.hasDisease) {
+            List < Location > neighbours = field.adjacentLocations(this.getLocation());
+            for (Location neighbour: neighbours) { //load each neighbour's location
+                if (neighbour != null) { //check the grid exist or not
                     Object object = field.getObjectAt(neighbour);
-                    if(object != null && object instanceof Animal){
-                        ((Animal)object).setHasDisease(true);
+                    if (object != null && object instanceof Animal) {
+                        ((Animal) object).setHasDisease(true);
                     }
                 }
             }
@@ -271,10 +253,9 @@ public abstract class Animal
      * 
      * @return The number of births (may be zero).
      */
-    protected int breed()
-    {
+    protected int breed() {
         int births = 0;
-        if(RANDOM.nextDouble() <= breedingProbability && canBreed() && canMeet()) {
+        if (RANDOM.nextDouble() <= breedingProbability && canBreed() && canMeet()) {
             births = RANDOM.nextInt(maxLitterSize) + 1;
         }
         return births;
@@ -285,19 +266,16 @@ public abstract class Animal
      * 
      * @return true if the animal is old enough to breed
      */
-    protected boolean canBreed()
-    {
+    protected boolean canBreed() {
         return age >= breedingAge;
     }
-
 
     /**
      * Increase the age. This could result in the animal's death.
      */
-    protected void incrementAge()
-    {
-        setAge(getAge()+1);
-        if(getAge() > maxAge) {
+    protected void incrementAge() {
+        setAge(getAge() + 1);
+        if (getAge() > maxAge) {
             setDead();
         }
     }
@@ -307,9 +285,8 @@ public abstract class Animal
      * 
      * @param newLocation The animal's new location.
      */
-    protected void setLocation(Location newLocation)
-    {
-        if(location != null) {
+    protected void setLocation(Location newLocation) {
+        if (location != null) {
             field.clear(location);
         }
         location = newLocation;
@@ -321,8 +298,7 @@ public abstract class Animal
      * 
      * @return The animal's field.
      */
-    protected Field getField()
-    {
+    protected Field getField() {
         return field;
     }
 
@@ -331,8 +307,7 @@ public abstract class Animal
      * 
      * @return The probability of the animal contracting a disease.
      */
-    protected double getDiseaseProbability()
-    {
+    protected double getDiseaseProbability() {
         return diseaseProbability;
     }
 
@@ -341,8 +316,7 @@ public abstract class Animal
      * 
      * @param diseaseProbability The probability of the animal contracting a disease
      */
-    protected void setDiseaseProbability(double diseaseProbability)
-    {
+    protected void setDiseaseProbability(double diseaseProbability) {
         this.diseaseProbability = diseaseProbability;
     }
 
@@ -351,96 +325,86 @@ public abstract class Animal
      * 
      * @return The probability of the animal breeding
      */
-    protected double getBreedingProbability()
-    {
+    protected double getBreedingProbability() {
         return breedingProbability;
     }
-    
+
     /**
      * Sets the probability of the animal breeding
      * 
      * @param breedingProbability The probability of the animal breeding
      */
-    protected void setBreedingProbability(double breedingProbability)
-    {
+    protected void setBreedingProbability(double breedingProbability) {
         this.breedingProbability = breedingProbability;
-    }  
-    
+    }
+
     /**
      * Returns the maximum number of births that the animal can have
      * 
      * @return The maximum number of births the animal can have in a step
      */
-    protected int getMaxLitterSize()
-    {
+    protected int getMaxLitterSize() {
         return maxLitterSize;
     }
-    
+
     /**
      * Sets the maximum number of births that the animal can have in one step
      * 
      * @param maxLitterSize The maximum number of births that an animal can have in a single step
      */
-    protected void setMaxLitterSize(int maxLitterSize)
-    {
+    protected void setMaxLitterSize(int maxLitterSize) {
         this.maxLitterSize = maxLitterSize;
     }
-    
+
     /**
      * Returns the age of the animal
      * 
      * @return The age of the animal
      */
-    protected int getAge()
-    {
+    protected int getAge() {
         return age;
     }
-    
+
     /**
      * Sets the age of the animal
      * 
      * @param age The age of the animal
      */
-    protected void setAge(int age)
-    {
+    protected void setAge(int age) {
         this.age = age;
     }
-    
+
     /**
      * Returns the maximum age of the animal
      * 
      * @return The maximum age of the animal
      */
-    protected int getMaxAge()
-    {
+    protected int getMaxAge() {
         return maxAge;
     }
-    
+
     /**
      * Sets the maximum age of the animal
      * 
      * @param maxAge The maximum age of the animal
      */
-    protected void setMaxAge(int maxAge)
-    {
+    protected void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
     }
-    
+
     /**
      * Returns the breeding age of the animal
      * 
      * @return The breeding age of the animal
      */
-    protected int getBreedingAge()
-    {
+    protected int getBreedingAge() {
         return breedingAge;
     }
-    
+
     /**
      * Sets the age of the animal that they have to reach before they can start breeding
      */
-    protected void setBreedingAge(int breedingAge)
-    {
+    protected void setBreedingAge(int breedingAge) {
         this.breedingAge = breedingAge;
     }
 
@@ -449,26 +413,23 @@ public abstract class Animal
      * 
      * @return The breeding age of the animal
      */
-    protected boolean getNightActivity()
-    {
+    protected boolean getNightActivity() {
         return nightActivity;
     }
-    
+
     /**
      * Sets the age of the animal that they have to reach before they can start breeding
      */
-    protected void setNightActivity(boolean nightActivity)
-    {
+    protected void setNightActivity(boolean nightActivity) {
         this.nightActivity = nightActivity;
     }
-    
+
     /**
      * Returns the current food level of the animal
      * 
      * @return The food level of the animal
      */
-    protected int getFoodLevel()
-    {
+    protected int getFoodLevel() {
         return foodLevel;
     }
 
@@ -477,8 +438,7 @@ public abstract class Animal
      * 
      * @param foodLevel the food level to be set
      */
-    protected void setFoodLevel(int foodLevel)
-    {
+    protected void setFoodLevel(int foodLevel) {
         this.foodLevel = foodLevel;
     }
 }

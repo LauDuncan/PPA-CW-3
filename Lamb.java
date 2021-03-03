@@ -9,8 +9,7 @@ import java.util.Random;
  * @author Liu Jie Xi and Lau Ying Hei
  * @version 2021.02.20
  */
-public class Lamb extends Animal
-{
+public class Lamb extends Animal {
     // Characteristics shared by all lambs (class variables).
 
     // The age at which a lamb can start to breed.
@@ -27,7 +26,7 @@ public class Lamb extends Animal
     private static final int MAX_ACTIVITY_LEVEL = 10;
     //Whether the animal will act during the night.
     private static final boolean NIGHT_ACTIVITY = false;
-    
+
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -39,17 +38,15 @@ public class Lamb extends Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Lamb(boolean randomAge, Field field, Location location)
-    {
-        super(field, location);        
-        if(randomAge) {
+    public Lamb(boolean randomAge, Field field, Location location) {
+        super(field, location);
+        if (randomAge) {
             setAge(rand.nextInt(MAX_AGE));
             setFoodLevel(rand.nextInt(MAX_ACTIVITY_LEVEL));
-        }
-        else {
+        } else {
             setAge(0);
             setFoodLevel(MAX_ACTIVITY_LEVEL);
-        }        
+        }
         setDiseaseProbability(DISEASE_PROBABILITY);
         setBreedingProbability(BREEDING_PROBABILITY);
         setMaxLitterSize(MAX_LITTER_SIZE);
@@ -58,24 +55,22 @@ public class Lamb extends Animal
         setNightActivity(NIGHT_ACTIVITY);
     }
 
-    
     /**
      * Look for grass cells adjacent to the current location.
      * Only one grass cell is eaten.
      * @return Where food was found, or null if it wasn't.
      */
-     @Override
-    protected Location findFood()
-    {
+    @Override
+    protected Location findFood() {
         Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
+        List < Location > adjacent = field.adjacentLocations(getLocation());
+        Iterator < Location > it = adjacent.iterator();
+        while (it.hasNext()) {
             Location where = it.next();
             Plant plant = field.getPlants().get(where);
-            if(plant instanceof Grass) {
+            if (plant instanceof Grass) {
                 Grass grass = (Grass) plant;
-                if(grass.isEdible()) { 
+                if (grass.isEdible()) {
                     setFoodLevel(getFoodLevel() + grass.consume());
                     grass.reset();
                     return where;
@@ -91,14 +86,13 @@ public class Lamb extends Animal
      * @param newLambs A list to return newly born lambs.
      */
     @Override
-    protected void giveBirth(List<Animal> newLambs)
-    {
+    protected void giveBirth(List < Animal > newLambs) {
         // New lambs are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        List < Location > free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
+        for (int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Lamb young = new Lamb(false, field, loc);
             newLambs.add(young);

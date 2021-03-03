@@ -7,8 +7,7 @@ import java.util.Random;
  * @author Liu Jie Xi and Lau Ying Hei
  * @version 2021.02.20
  */
-public abstract class Plant
-{
+public abstract class Plant {
     // The plant's position in the field.
     private Location location;
 
@@ -17,8 +16,7 @@ public abstract class Plant
      * 
      * @param location The location of the plant within the field.
      */
-    public Plant(Location location)
-    {
+    public Plant(Location location) {
         this.location = location;
     }
 
@@ -35,9 +33,7 @@ public abstract class Plant
      * 
      * @return The plant's location.
      */
-    protected Location getLocation()
-    {
+    protected Location getLocation() {
         return location;
     }
 }
-

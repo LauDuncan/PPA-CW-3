@@ -7,27 +7,24 @@ import java.util.Random;
  * @author Liu Jie Xi and Lau Ying Hei
  * @version 2021.02.20
  */
-public class Grass extends Plant
-{
+public class Grass extends Plant {
     // The growth of the plant represented as an integer.
     private int growth;
     /**
      * Constructor for objects of class Grass
      */
-    public Grass(Location location)
-    {
+    public Grass(Location location) {
         super(location);
         Random rd = new Random();
         growth = rd.nextInt(5);
     }
-    
+
     /**
      * Return the current growth value of the plant
      * 
      * @return The growth value of the plant
      */
-    public int getGrowth()
-    {
+    public int getGrowth() {
         return growth;
     }
 
@@ -38,13 +35,10 @@ public class Grass extends Plant
      * @param isDay A boolean indicating whether it is day time
      * @param weather A weather object that will vary the plant's growth
      */
-    public void grow(boolean isDay, Weather weather)
-    {
-        if(isDay && weather == null){
+    public void grow(boolean isDay, Weather weather) {
+        if (isDay && weather == null) {
             growth += 1; //normal growth of the plant under sunlight
-        }
-        
-        else if(weather != null){
+        } else if (weather != null) {
             growth += weather.getGrowthEffect();
         }
     }
@@ -53,8 +47,7 @@ public class Grass extends Plant
      * Indicates that the plant just got eaten.
      * The growth of the plant will reset.
      */
-    protected void reset()
-    {
+    protected void reset() {
         growth = 0;
     }
 
@@ -63,8 +56,7 @@ public class Grass extends Plant
      * 
      * @return true if the plant is edible by animals.
      */
-    protected boolean isEdible()
-    {
+    protected boolean isEdible() {
         return growth > 2;
     }
 
@@ -73,12 +65,10 @@ public class Grass extends Plant
      * 
      * @return A int that will represent the food value of this plant.
      */
-    protected int consume()
-    {
-        if (growth > 3){
+    protected int consume() {
+        if (growth > 3) {
             return 6;
-        }
-        else{
+        } else {
             return 3;
         }
     }
